@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\licenta.csproj": {}
+    "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\licenta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\licenta.csproj": {
+    "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\licenta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\licenta.csproj",
+        "projectUniqueName": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\licenta.csproj",
         "projectName": "licenta",
-        "projectPath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\licenta.csproj",
+        "projectPath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\licenta.csproj",
         "packagesPath": "C:\\Users\\eugen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\obj\\",
+        "outputPath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

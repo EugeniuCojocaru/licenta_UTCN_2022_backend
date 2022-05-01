@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "zV6BU1fGaBtFSbI022hqRMs+BU5Hzd4o8MhOCAPBUqV1W0ykQ9jhX48XzisAyD91uKrVv0P6K0UrjOOWhLFveQ==",
+  "dgSpecHash": "JxTUhIIK0BAlwdQ5gERYCjTqaIJCZ24pIU63pahOoHBUWaFq61JRiOH8gNDc0Ue0Pe9LCtV9A7LhAf/GBDDpyQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta\\licenta\\licenta.csproj",
+  "projectFilePath": "C:\\Users\\eugen\\OneDrive\\Desktop\\Licenta\\backend\\licenta_be\\licenta\\licenta.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\eugen\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
+    "C:\\Users\\eugen\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\eugen\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\eugen\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\eugen\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.3\\microsoft.entityframeworkcore.6.0.3.nupkg.sha512",
     "C:\\Users\\eugen\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.3\\microsoft.entityframeworkcore.abstractions.6.0.3.nupkg.sha512",
     "C:\\Users\\eugen\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\6.0.3\\microsoft.entityframeworkcore.analyzers.6.0.3.nupkg.sha512",

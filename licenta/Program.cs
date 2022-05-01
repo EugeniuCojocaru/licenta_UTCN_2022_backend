@@ -1,4 +1,5 @@
 using licenta.DbContexts;
+using licenta.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EntityContext>();
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IFacultyRepository, FacultyRepository>();
+builder.Services.AddScoped<IFieldOfStudyRepository, FieldOfStudyRepository>();
 
 var app = builder.Build();
 

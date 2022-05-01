@@ -64,23 +64,7 @@ namespace licenta.Migrations
                     b.ToTable("Faculties");
                 });
 
-            modelBuilder.Entity("licenta.Entities.Institution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institutions");
-                });
-
-            modelBuilder.Entity("licenta.Entities.StudyDomain", b =>
+            modelBuilder.Entity("licenta.Entities.FieldOfStudy", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +82,23 @@ namespace licenta.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("StudyDomains");
+                    b.ToTable("FieldsOfStudy");
+                });
+
+            modelBuilder.Entity("licenta.Entities.Institution", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Institutions");
                 });
 
             modelBuilder.Entity("licenta.Entities.Department", b =>
@@ -123,7 +123,7 @@ namespace licenta.Migrations
                     b.Navigation("Institution");
                 });
 
-            modelBuilder.Entity("licenta.Entities.StudyDomain", b =>
+            modelBuilder.Entity("licenta.Entities.FieldOfStudy", b =>
                 {
                     b.HasOne("licenta.Entities.Department", "Department")
                         .WithMany("StudyDomains")

@@ -1,22 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using licenta.Models;
+using licenta.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
     [Route("api/institutions")]
-    public class InstitutionController: ControllerBase
+    public class InstitutionController : ControllerBase
     {
-        [HttpGet()]
-        public JsonResult GetInstitutions ()
-        {
-             return new JsonResult(
-                new List<object>
+        private readonly IInstitutionRepository _institutionRepository;
+        private readonly IMapper _mapper;
 
-                {
-                    new {id=1, name="sadasdas"},
-                    new {id=2, name="dasdwscas"}
-                }
-                );
+        public InstitutionController(IInstitutionRepository institutionRepository, IMapper mapper)
+        {
+            _institutionRepository = institutionRepository ?? throw new ArgumentNullException(nameof(institutionRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<InstitutionWithoutFacultyDto>>> GetInstitutions()
+        {
+            var institutionEntities = await _institutionRepository.GetAll();
+            return Ok(_mapper.Map<IEnumerable<InstitutionWithoutFacultyDto>>(institutionEntities));
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetInstitution(Guid id, bool includeFaculties = false)
+        {
+            var institution = await _institutionRepository.GetById(id);
+            if (institution == null)
+            {
+                return NotFound();
+            }
+            if (includeFaculties)
+            {
+                return Ok(_mapper.Map<InstitutionDto>(institution));
+            }
+            return Ok(_mapper.Map<InstitutionWithoutFacultyDto>(institution));
+
         }
 
     }

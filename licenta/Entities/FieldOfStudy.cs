@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace licenta.Entities
 {
-    public class StudyDomain
+    public class FieldOfStudy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,8 +15,8 @@ namespace licenta.Entities
 
         [ForeignKey("DepartmentId")]
         public Department? Department { get; set; }
-        public Guid DepartmentId { get; set; } 
-        public StudyDomain(string name)
+        public Guid DepartmentId { get; set; }
+        public FieldOfStudy(string name)
         {
             Name = name;
         }
