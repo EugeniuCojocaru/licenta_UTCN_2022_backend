@@ -13,7 +13,7 @@ namespace licenta.Entities
         [MaxLength(100)]
         public string Name { get; set; }
 
-
+        [Required]
         [ForeignKey("InstitutionId")]
         public Institution? Institution { get; set; }
         public Guid InstitutionId { get; set; }

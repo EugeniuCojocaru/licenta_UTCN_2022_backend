@@ -10,11 +10,13 @@ namespace licenta.Controllers
     public class InstitutionController : ControllerBase
     {
         private readonly IInstitutionRepository _institutionRepository;
+        private readonly IFacultyRepository _facultyRepository;
         private readonly IMapper _mapper;
 
-        public InstitutionController(IInstitutionRepository institutionRepository, IMapper mapper)
+        public InstitutionController(IInstitutionRepository institutionRepository, IFacultyRepository facultyRepository, IMapper mapper)
         {
             _institutionRepository = institutionRepository ?? throw new ArgumentNullException(nameof(institutionRepository));
+            _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -41,6 +43,35 @@ namespace licenta.Controllers
             return Ok(_mapper.Map<InstitutionWithoutFacultyDto>(institution));
 
         }
+        [HttpGet("{id}/faculties")]
+        public async Task<ActionResult> GetFacultyByInstitutionId(Guid id)
+        {
+            var institution = await _institutionRepository.GetById(id);
 
+            if (institution == null)
+            {
+                return NotFound();
+            }
+            var facultyEntities = await _facultyRepository.GetAllByInstitutionId(id);
+
+            return Ok(_mapper.Map<FacultyWithoutDepartmentDto>(facultyEntities));
+
+        }
+        [HttpPost]
+        public async Task<ActionResult<InstitutionDto>> CreateInstitution(InstitutionCreateDto newInstitution)
+        {
+            if (await _institutionRepository.Exists(newInstitution.Name))
+            {
+                return Conflict("Same name not allowed");
+            }
+            var dbInstitution = _mapper.Map<Entities.Institution>(newInstitution);
+
+            await _institutionRepository.CreateInstitution(dbInstitution);
+            // await _institutionRepository.SaveChanges();
+
+            var institutionToReturn = _mapper.Map<InstitutionDto>(dbInstitution);
+            return Ok(institutionToReturn);
+
+        }
     }
 }

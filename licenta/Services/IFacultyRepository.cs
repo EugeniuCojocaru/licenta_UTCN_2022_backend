@@ -8,5 +8,10 @@ namespace licenta.Services
 
         Task<Faculty?> GetById(Guid id);
 
+        Task<IEnumerable<Faculty>> GetAllByInstitutionId(Guid institutionId);
+
+        Task<bool> Exists(Guid id);
+
+        void CreateFaculty(Faculty faculty);
     }
 }

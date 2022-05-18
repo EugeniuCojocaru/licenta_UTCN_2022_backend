@@ -6,5 +6,6 @@ namespace licenta.Services
     {
         Task<IEnumerable<Department>> GetAll();
         Task<Department?> GetById(Guid id);
+        Task<bool> Exists(Guid id);
     }
 }

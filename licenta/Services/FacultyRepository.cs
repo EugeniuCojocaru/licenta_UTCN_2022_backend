@@ -22,5 +22,20 @@ namespace licenta.Services
         {
             return await _context.Faculties.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<IEnumerable<Faculty>> GetAllByInstitutionId(Guid institutionId)
+        {
+            return await _context.Faculties.Where(i => i.Institution.Id == institutionId).ToListAsync();
+        }
+        public void CreateFaculty(Faculty faculty)
+        {
+            if (faculty != null)
+            {
+                _context.Faculties.Add(faculty);
+            }
+        }
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _context.Faculties.AnyAsync(i => i.Id == id);
+        }
     }
 }

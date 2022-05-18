@@ -10,11 +10,13 @@ namespace licenta.Controllers
     public class FacultyController : ControllerBase
     {
         private readonly IFacultyRepository _facultyRepository;
+        private readonly IInstitutionRepository _institutionRepository;
         private readonly IMapper _mapper;
 
-        public FacultyController(IFacultyRepository facultyRepository, IMapper mapper)
+        public FacultyController(IFacultyRepository facultyRepository, IInstitutionRepository institutionRepository, IMapper mapper)
         {
             _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
+            _institutionRepository = institutionRepository ?? throw new ArgumentNullException(nameof(institutionRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -26,10 +28,10 @@ namespace licenta.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetFaculty(Guid id, bool includeDepartments = false)
+        [HttpGet("{facultyId}", Name = "GetFaculty")]
+        public async Task<ActionResult> GetFaculty(Guid facultyId, bool includeDepartments = false)
         {
-            var faculty = await _facultyRepository.GetById(id);
+            var faculty = await _facultyRepository.GetById(facultyId);
             if (faculty == null)
             {
                 return NotFound();
@@ -40,6 +42,27 @@ namespace licenta.Controllers
             }
             return Ok(_mapper.Map<FacultyWithoutDepartmentDto>(faculty));
 
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<FacultyWithoutDepartmentDto>> CreateFaculty(Guid institutionId, FacultyCreateDto facultyDto)
+        {
+            if (!await _institutionRepository.Exists(institutionId))
+            {
+                return NotFound();
+            }
+
+            var faculty = _mapper.Map<Entities.Faculty>(facultyDto);
+
+            await _institutionRepository.AddFacultyToInstitution(institutionId, faculty);
+
+            await _institutionRepository.SaveChanges();
+
+            var facultyToReturn = _mapper.Map<FacultyWithoutDepartmentDto>(faculty);
+
+            return Ok(facultyToReturn);
         }
     }
 }

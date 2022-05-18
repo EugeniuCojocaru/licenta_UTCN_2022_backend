@@ -16,6 +16,7 @@ namespace licenta.Entities
         [ForeignKey("DepartmentId")]
         public Department? Department { get; set; }
         public Guid DepartmentId { get; set; }
+
         public FieldOfStudy(string name)
         {
             Name = name;

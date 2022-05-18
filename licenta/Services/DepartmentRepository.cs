@@ -22,5 +22,9 @@ namespace licenta.Services
         {
             return await _context.Departments.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _context.Departments.AnyAsync();
+        }
     }
 }
