@@ -11,12 +11,14 @@ namespace licenta.Controllers
     {
         private readonly IFacultyRepository _facultyRepository;
         private readonly IInstitutionRepository _institutionRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
-        public FacultyController(IFacultyRepository facultyRepository, IInstitutionRepository institutionRepository, IMapper mapper)
+        public FacultyController(IFacultyRepository facultyRepository, IInstitutionRepository institutionRepository, IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
             _institutionRepository = institutionRepository ?? throw new ArgumentNullException(nameof(institutionRepository));
+            _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -44,19 +46,32 @@ namespace licenta.Controllers
 
         }
 
+        [HttpGet("{facultyId}/departments")]
+        public async Task<ActionResult> GetDepartmentsByFacultyId(Guid facultyId)
+        {
+            var faculty = await _facultyRepository.GetById(facultyId);
 
+            if (faculty == null)
+            {
+                return NotFound();
+            }
+            var departmentEntities = await _departmentRepository.GetAllByFacultyId(facultyId);
+
+            return Ok(_mapper.Map<IEnumerable<DepartmentWithoutFieldOfStudyDto>>(departmentEntities));
+
+        }
 
         [HttpPost]
-        public async Task<ActionResult<FacultyWithoutDepartmentDto>> CreateFaculty(Guid institutionId, FacultyCreateDto facultyDto)
+        public async Task<ActionResult<FacultyWithoutDepartmentDto>> CreateFaculty(FacultyCreateDto facultyDto)
         {
-            if (!await _institutionRepository.Exists(institutionId))
+            if (!await _institutionRepository.Exists(facultyDto.InstitutionId))
             {
                 return NotFound();
             }
 
             var faculty = _mapper.Map<Entities.Faculty>(facultyDto);
 
-            await _institutionRepository.AddFacultyToInstitution(institutionId, faculty);
+            await _institutionRepository.AddFacultyToInstitution(facultyDto.InstitutionId, faculty);
 
             await _institutionRepository.SaveChanges();
 

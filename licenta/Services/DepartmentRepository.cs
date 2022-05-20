@@ -26,5 +26,9 @@ namespace licenta.Services
         {
             return await _context.Departments.AnyAsync();
         }
+        public async Task<IEnumerable<Department>> GetAllByFacultyId(Guid facultyId)
+        {
+            return await _context.Departments.Where(i => i.Faculty.Id == facultyId).ToListAsync();
+        }
     }
 }

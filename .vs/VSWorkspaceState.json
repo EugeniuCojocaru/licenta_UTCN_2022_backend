@@ -4,8 +4,9 @@
     "\\licenta",
     "\\licenta\\Controllers",
     "\\licenta\\Entities",
+    "\\licenta\\Models",
     "\\licenta\\Services"
   ],
-  "SelectedNode": "\\licenta.sln",
+  "SelectedNode": "\\licenta\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

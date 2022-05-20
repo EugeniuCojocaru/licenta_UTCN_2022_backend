@@ -33,9 +33,21 @@ namespace licenta.Services
                 _context.Faculties.Add(faculty);
             }
         }
+        public async Task AddDepartmentToFaculty(Guid facultyId, Department department)
+        {
+            var faculty = await GetById(facultyId);
+            if (faculty != null)
+            {
+                faculty.Departments.Add(department);
+            }
+        }
         public async Task<bool> Exists(Guid id)
         {
             return await _context.Faculties.AnyAsync(i => i.Id == id);
+        }
+        public async Task<bool> SaveChanges()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
         }
     }
 }
