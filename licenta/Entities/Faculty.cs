@@ -18,7 +18,7 @@ namespace licenta.Entities
         public Institution? Institution { get; set; }
         public Guid InstitutionId { get; set; }
 
-        public ICollection<Department> Department { get; set; } = new List<Department>();
+        public ICollection<Department> Departments { get; set; } = new List<Department>();
 
         public Faculty(string name)
         {

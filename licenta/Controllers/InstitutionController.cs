@@ -54,7 +54,7 @@ namespace licenta.Controllers
             }
             var facultyEntities = await _facultyRepository.GetAllByInstitutionId(id);
 
-            return Ok(_mapper.Map<FacultyWithoutDepartmentDto>(facultyEntities));
+            return Ok(_mapper.Map<IEnumerable<FacultyWithoutDepartmentDto>>(facultyEntities));
 
         }
         [HttpPost]
