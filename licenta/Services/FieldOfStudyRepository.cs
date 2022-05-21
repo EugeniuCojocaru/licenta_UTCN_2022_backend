@@ -22,10 +22,14 @@ namespace licenta.Services
         {
             return await _context.FieldsOfStudy.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
-
-        public Task<bool> SaveChanges()
+        public async Task<IEnumerable<FieldOfStudy>> GetAllByDepartmentId(Guid departmentId)
         {
-            throw new NotImplementedException();
+            return await _context.FieldsOfStudy.Where(i => i.Department.Id == departmentId).ToListAsync();
         }
+        public async Task<bool> SaveChanges()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
+        }
+
     }
 }

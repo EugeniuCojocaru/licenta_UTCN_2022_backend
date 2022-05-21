@@ -30,5 +30,17 @@ namespace licenta.Services
         {
             return await _context.Departments.Where(i => i.Faculty.Id == facultyId).ToListAsync();
         }
+        public async Task AddFieldOfStudyToDepartment(Guid departmentId, FieldOfStudy fieldOfStudy)
+        {
+            var department = await GetById(departmentId);
+            if (department != null)
+            {
+                department.FieldsOfStudy.Add(fieldOfStudy);
+            }
+        }
+        public async Task<bool> SaveChanges()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
+        }
     }
 }

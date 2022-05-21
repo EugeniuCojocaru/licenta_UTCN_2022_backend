@@ -10,11 +10,13 @@ namespace licenta.Controllers
     public class FieldOfStudyController : Controller
     {
         private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
-        public FieldOfStudyController(IFieldOfStudyRepository fieldOfStudyRepository, IMapper mapper)
+        public FieldOfStudyController(IFieldOfStudyRepository fieldOfStudyRepository, IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _fieldOfStudyRepository = fieldOfStudyRepository ?? throw new ArgumentNullException(nameof(fieldOfStudyRepository));
+            _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -38,15 +40,23 @@ namespace licenta.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<FieldOfStudyDto>> CreateFieldOfStudy()
-        //{
+        [HttpPost]
+        public async Task<ActionResult<FieldOfStudyDto>> CreateFieldOfStudy(FieldOfStudyCreateDto fieldOfStudyDto)
+        {
+            if (!await _departmentRepository.Exists(fieldOfStudyDto.DepartmentId))
+            {
+                return NotFound();
+            }
 
-        //}
+            var fieldOfStudy = _mapper.Map<Entities.FieldOfStudy>(fieldOfStudyDto);
 
-        //public async Task<bool> SaveChanges()
-        //{
-        //    return (await _conte)
-        //}
+            await _departmentRepository.AddFieldOfStudyToDepartment(fieldOfStudyDto.DepartmentId, fieldOfStudy);
+
+            await _departmentRepository.SaveChanges();
+
+            var fieldOfStudyToReturn = _mapper.Map<FieldOfStudyDto>(fieldOfStudy);
+
+            return Ok(fieldOfStudyToReturn);
+        }
     }
 }

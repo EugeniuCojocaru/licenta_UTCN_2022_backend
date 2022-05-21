@@ -8,5 +8,7 @@ namespace licenta.Services
         Task<Department?> GetById(Guid id);
         Task<bool> Exists(Guid id);
         Task<IEnumerable<Department>> GetAllByFacultyId(Guid facultyId);
+        Task AddFieldOfStudyToDepartment(Guid departmentId, FieldOfStudy fieldOfStudy);
+        Task<bool> SaveChanges();
     }
 }

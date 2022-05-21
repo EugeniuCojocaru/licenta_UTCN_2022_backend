@@ -26,13 +26,6 @@ namespace licenta.Services
         {
             return await _context.Faculties.Where(i => i.Institution.Id == institutionId).ToListAsync();
         }
-        public void CreateFaculty(Faculty faculty)
-        {
-            if (faculty != null)
-            {
-                _context.Faculties.Add(faculty);
-            }
-        }
         public async Task AddDepartmentToFaculty(Guid facultyId, Department department)
         {
             var faculty = await GetById(facultyId);

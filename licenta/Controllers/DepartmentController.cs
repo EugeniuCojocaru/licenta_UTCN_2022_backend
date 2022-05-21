@@ -11,12 +11,14 @@ namespace licenta.Controllers
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IFacultyRepository _facultyRepository;
+        private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository departmentRepository, IFacultyRepository facultyRepository, IMapper mapper)
+        public DepartmentController(IDepartmentRepository departmentRepository, IFacultyRepository facultyRepository, IFieldOfStudyRepository fieldOfStudyRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
+            _fieldOfStudyRepository = fieldOfStudyRepository ?? throw new ArgumentNullException(nameof(fieldOfStudyRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -43,9 +45,23 @@ namespace licenta.Controllers
 
         }
 
+        [HttpGet("{departmentId}/fieldsOfStudy")]
+        public async Task<ActionResult> GetFieldsOfStudyByDepartmentId(Guid departmentId)
+        {
+            var department = await _departmentRepository.GetById(departmentId);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+            var fieldsOfStudyEntities = await _fieldOfStudyRepository.GetAllByDepartmentId(departmentId);
+
+            return Ok(_mapper.Map<IEnumerable<FieldOfStudyDto>>(fieldsOfStudyEntities));
+
+        }
 
         [HttpPost]
-        public async Task<ActionResult<DepartmentWithoutFieldOfStudyDto>> CreateFaculty(DepartmentCreateDto departmentDto)
+        public async Task<ActionResult<DepartmentWithoutFieldOfStudyDto>> CreateDepartment(DepartmentCreateDto departmentDto)
         {
             if (!await _facultyRepository.Exists(departmentDto.FacultyId))
             {

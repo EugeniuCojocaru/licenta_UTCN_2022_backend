@@ -17,7 +17,7 @@ namespace licenta.Entities
         public Faculty? Faculty { get; set; }
         public Guid FacultyId { get; set; }
 
-        public ICollection<FieldOfStudy> StudyDomains { get; set; } = new List<FieldOfStudy>();
+        public ICollection<FieldOfStudy> FieldsOfStudy { get; set; } = new List<FieldOfStudy>();
 
         public Department(string name)
         {
