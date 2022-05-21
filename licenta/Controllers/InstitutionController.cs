@@ -43,6 +43,7 @@ namespace licenta.Controllers
             return Ok(_mapper.Map<InstitutionWithoutFacultyDto>(institution));
 
         }
+
         [HttpGet("{id}/faculties")]
         public async Task<ActionResult> GetFacultyByInstitutionId(Guid id)
         {
@@ -57,6 +58,7 @@ namespace licenta.Controllers
             return Ok(_mapper.Map<IEnumerable<FacultyWithoutDepartmentDto>>(facultyEntities));
 
         }
+
         [HttpPost]
         public async Task<ActionResult<InstitutionDto>> CreateInstitution(InstitutionCreateDto newInstitution)
         {
@@ -72,6 +74,21 @@ namespace licenta.Controllers
             var institutionToReturn = _mapper.Map<InstitutionDto>(dbInstitution);
             return Ok(institutionToReturn);
 
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateInstitution(InstitutionUpdateDto updatedInstitution)
+        {
+            var oldInstitution = await _institutionRepository.GetById(updatedInstitution.Id);
+            if (oldInstitution == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updatedInstitution, oldInstitution);
+            await _institutionRepository.SaveChanges();
+
+            return Ok();
         }
     }
 }
