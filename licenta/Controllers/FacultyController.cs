@@ -96,5 +96,25 @@ namespace licenta.Controllers
 
             return Ok();
         }
+
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteFaculty(Guid facultyId, Guid institutionId)
+        {
+            if (!await _institutionRepository.Exists(institutionId))
+            {
+                return NotFound("Institution not found");
+            }
+
+            var faculty = await _facultyRepository.GetById(facultyId);
+            if (faculty == null || faculty.InstitutionId != institutionId)
+            { return NotFound("Faculty not found for the institution"); }
+
+
+            _facultyRepository.DeleteFaculty(faculty);
+            await _institutionRepository.SaveChanges();
+            return Ok();
+
+        }
     }
 }

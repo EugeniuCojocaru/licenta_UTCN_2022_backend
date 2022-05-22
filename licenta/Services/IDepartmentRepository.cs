@@ -9,6 +9,7 @@ namespace licenta.Services
         Task<bool> Exists(Guid id);
         Task<IEnumerable<Department>> GetAllByFacultyId(Guid facultyId);
         Task AddFieldOfStudyToDepartment(Guid departmentId, FieldOfStudy fieldOfStudy);
+        void DeleteDepartment(Department department);
         Task<bool> SaveChanges();
     }
 }

@@ -89,5 +89,20 @@ namespace licenta.Controllers
 
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteInstitution(Guid institutionId)
+        {
+            var institution = await _institutionRepository.GetById(institutionId);
+            if (institution == null)
+            {
+                return NotFound("Institution does not exist");
+            }
+
+            _institutionRepository.DeleteInstitution(institution);
+            await _institutionRepository.SaveChanges();
+            return Ok();
+
+        }
     }
 }

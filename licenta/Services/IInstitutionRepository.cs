@@ -12,5 +12,7 @@ namespace licenta.Services
         Task<bool> SaveChanges();
         Task<bool> CreateInstitution(Institution institution);
 
+        void DeleteInstitution(Institution institution);
+
     }
 }

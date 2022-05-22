@@ -42,5 +42,10 @@ namespace licenta.Services
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+        public void DeleteFaculty(Faculty faculty)
+        {
+            _context.Faculties.Remove(faculty);
+        }
     }
 }

@@ -31,5 +31,9 @@ namespace licenta.Services
             return (await _context.SaveChangesAsync() >= 0);
         }
 
+        public void DeleteFieldOfStudy(FieldOfStudy fieldOfStudy)
+        {
+            _context.FieldsOfStudy.Remove(fieldOfStudy);
+        }
     }
 }

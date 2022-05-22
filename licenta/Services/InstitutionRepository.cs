@@ -53,5 +53,9 @@ namespace licenta.Services
             return (await _context.SaveChangesAsync() >= 0);
         }
 
+        public void DeleteInstitution(Institution institution)
+        {
+            _context.Institutions.Remove(institution);
+        }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace licenta.Controllers
 {
     [ApiController]
-    [Route("api/department")]
+    [Route("api/departments")]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentRepository _departmentRepository;
@@ -91,6 +91,23 @@ namespace licenta.Controllers
             if (oldDepartment == null || oldDepartment.FacultyId != facultyId) { return NotFound("Department not found for the faculty"); }
 
             _mapper.Map(departmentDto, oldDepartment);
+            await _departmentRepository.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteDepartment(Guid facultyId, Guid departmentId)
+        {
+            if (!await _facultyRepository.Exists(facultyId))
+            {
+                return NotFound("Faculty not found");
+            }
+
+            var oldDepartment = await _departmentRepository.GetById(departmentId);
+            if (oldDepartment == null || oldDepartment.FacultyId != facultyId) { return NotFound("Department not found for the faculty"); }
+
+            _departmentRepository.DeleteDepartment(oldDepartment);
             await _departmentRepository.SaveChanges();
 
             return Ok();

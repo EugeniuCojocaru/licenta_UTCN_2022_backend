@@ -10,5 +10,7 @@ namespace licenta.Services
         Task<bool> Exists(Guid id);
         Task AddDepartmentToFaculty(Guid facultyId, Department department);
         Task<bool> SaveChanges();
+
+        void DeleteFaculty(Faculty faculty);
     }
 }
