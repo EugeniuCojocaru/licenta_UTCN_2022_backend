@@ -9,6 +9,7 @@ namespace licenta.Profiles
             CreateMap<Entities.Department, Models.DepartmentDto>();
             CreateMap<Entities.Department, Models.DepartmentWithoutFieldOfStudyDto>();
             CreateMap<Models.DepartmentCreateDto, Entities.Department>();
+            CreateMap<Models.InstitutionUpdateDto, Entities.Department>();
         }
     }
 }

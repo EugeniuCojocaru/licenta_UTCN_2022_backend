@@ -58,5 +58,22 @@ namespace licenta.Controllers
 
             return Ok(fieldOfStudyToReturn);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateDepartment(Guid departmentId, InstitutionUpdateDto fieldOfStudyDto)
+        {
+            if (!await _departmentRepository.Exists(departmentId))
+            {
+                return NotFound("Department not found");
+            }
+
+            var oldFieldOfStudy = await _fieldOfStudyRepository.GetById(fieldOfStudyDto.Id);
+            if (oldFieldOfStudy == null || oldFieldOfStudy.DepartmentId != departmentId) { return NotFound("FieldOfStudy not found for the department"); }
+
+            _mapper.Map(fieldOfStudyDto, oldFieldOfStudy);
+            await _fieldOfStudyRepository.SaveChanges();
+
+            return Ok();
+        }
     }
 }

@@ -78,5 +78,22 @@ namespace licenta.Controllers
 
             return Ok(facultyToReturn);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateDepartment(Guid facultyId, InstitutionUpdateDto departmentDto)
+        {
+            if (!await _facultyRepository.Exists(facultyId))
+            {
+                return NotFound("Faculty not found");
+            }
+
+            var oldDepartment = await _departmentRepository.GetById(departmentDto.Id);
+            if (oldDepartment == null || oldDepartment.FacultyId != facultyId) { return NotFound("Department not found for the faculty"); }
+
+            _mapper.Map(departmentDto, oldDepartment);
+            await _departmentRepository.SaveChanges();
+
+            return Ok();
+        }
     }
 }

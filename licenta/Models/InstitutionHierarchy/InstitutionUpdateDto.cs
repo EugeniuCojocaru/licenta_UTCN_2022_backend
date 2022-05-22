@@ -6,7 +6,7 @@ namespace licenta.Models
     {
         [Required(ErrorMessage = "You should provide a name")]
         public string Name { get; set; } = string.Empty;
-        [Required(ErrorMessage = "You should provide the institution's ID")]
+        [Required(ErrorMessage = "You should provide the ID")]
         public Guid Id { get; set; }
     }
 }

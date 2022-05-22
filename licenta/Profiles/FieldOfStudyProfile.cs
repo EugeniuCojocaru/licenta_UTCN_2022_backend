@@ -8,6 +8,7 @@ namespace licenta.Profiles
         {
             CreateMap<Entities.FieldOfStudy, Models.FieldOfStudyDto>();
             CreateMap<Models.FieldOfStudyCreateDto, Entities.FieldOfStudy>();
+            CreateMap<Models.InstitutionUpdateDto, Entities.FieldOfStudy>();
         }
     }
 }

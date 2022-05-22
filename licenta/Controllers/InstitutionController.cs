@@ -69,7 +69,6 @@ namespace licenta.Controllers
             var dbInstitution = _mapper.Map<Entities.Institution>(newInstitution);
 
             await _institutionRepository.CreateInstitution(dbInstitution);
-            // await _institutionRepository.SaveChanges();
 
             var institutionToReturn = _mapper.Map<InstitutionDto>(dbInstitution);
             return Ok(institutionToReturn);
