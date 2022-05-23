@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using licenta.Models;
-using licenta.Services;
+using licenta.Models.InstitutionHierarchy;
+using licenta.Services.InstitutionHierarchy;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers

@@ -1,4 +1,4 @@
-﻿namespace licenta.Models
+﻿namespace licenta.Models.InstitutionHierarchy
 {
     public class DepartmentDto
     {

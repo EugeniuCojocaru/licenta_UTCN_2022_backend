@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using licenta.Models.InstitutionHierarchy;
 
 namespace licenta.Profiles
 {
@@ -6,10 +7,10 @@ namespace licenta.Profiles
     {
         public DepartmentProfile()
         {
-            CreateMap<Entities.Department, Models.DepartmentDto>();
-            CreateMap<Entities.Department, Models.DepartmentWithoutFieldOfStudyDto>();
-            CreateMap<Models.DepartmentCreateDto, Entities.Department>();
-            CreateMap<Models.InstitutionUpdateDto, Entities.Department>();
+            CreateMap<Entities.Department, DepartmentDto>();
+            CreateMap<Entities.Department, DepartmentWithoutFieldOfStudyDto>();
+            CreateMap<DepartmentCreateDto, Entities.Department>();
+            CreateMap<InstitutionUpdateDto, Entities.Department>();
         }
     }
 }

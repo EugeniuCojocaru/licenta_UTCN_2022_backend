@@ -1,5 +1,5 @@
 using licenta.DbContexts;
-using licenta.Services;
+using licenta.Services.InstitutionHierarchy;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);

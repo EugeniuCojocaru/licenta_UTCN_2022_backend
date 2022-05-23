@@ -2,7 +2,7 @@
 using licenta.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace licenta.Services
+namespace licenta.Services.InstitutionHierarchy
 {
     public class InstitutionRepository : IInstitutionRepository
     {

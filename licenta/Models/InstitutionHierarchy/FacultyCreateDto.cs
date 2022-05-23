@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace licenta.Models
+namespace licenta.Models.InstitutionHierarchy
 {
     public class FacultyCreateDto
     {

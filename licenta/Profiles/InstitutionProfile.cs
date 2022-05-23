@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-
+using licenta.Models.InstitutionHierarchy;
 namespace licenta.Profiles
 {
     public class InstitutionProfile : Profile
     {
         public InstitutionProfile()
         {
-            CreateMap<Entities.Institution, Models.InstitutionWithoutFacultyDto>();
-            CreateMap<Entities.Institution, Models.InstitutionDto>();
-            CreateMap<Models.InstitutionCreateDto, Entities.Institution>();
-            CreateMap<Models.InstitutionUpdateDto, Entities.Institution>();
+            CreateMap<Entities.Institution, InstitutionWithoutFacultyDto>();
+            CreateMap<Entities.Institution, InstitutionDto>();
+            CreateMap<InstitutionCreateDto, Entities.Institution>();
+            CreateMap<InstitutionUpdateDto, Entities.Institution>();
         }
     }
 }

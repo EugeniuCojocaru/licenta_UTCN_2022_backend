@@ -1,6 +1,6 @@
 ﻿using licenta.Entities;
 
-namespace licenta.Services
+namespace licenta.Services.InstitutionHierarchy
 {
     public interface IFacultyRepository
     {
