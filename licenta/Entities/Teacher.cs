@@ -21,12 +21,17 @@ namespace licenta.Entities
         [Required]
         public Role Role { get; set; }
 
-        public Teacher(Guid id, string name, string email, Role role)
+        public Teacher(string name, string email, Role role)
         {
-            Id = id;
             Name = name;
             Email = email;
             Role = role;
+        }
+
+        public Teacher(string name, string email)
+        {
+            Name = name;
+            Email = email;
         }
     }
 }
