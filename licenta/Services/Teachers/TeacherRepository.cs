@@ -38,9 +38,13 @@ namespace licenta.Services.Teachers
             return await _context.Teachers.AnyAsync(i => i.Email == email);
         }
 
-        public async Task<IEnumerable<Teacher>> GetAll()
+        public async Task<IEnumerable<Teacher>> GetAll(bool active)
         {
+            if (active)
+                return await _context.Teachers.Where(i => i.Active == true).OrderBy(i => i.Name).ToListAsync();
+
             return await _context.Teachers.OrderBy(i => i.Name).ToListAsync();
+
         }
 
         public async Task<Teacher?> GetById(Guid id)

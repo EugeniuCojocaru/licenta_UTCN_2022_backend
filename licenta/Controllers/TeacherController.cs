@@ -20,9 +20,9 @@ namespace licenta.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetTeachers()
+        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetTeachers(bool active)
         {
-            var teacherEntities = await _teacherRepository.GetAll();
+            var teacherEntities = await _teacherRepository.GetAll(active);
             return Ok(_mapper.Map<IEnumerable<TeacherDto>>(teacherEntities));
 
         }
@@ -48,6 +48,7 @@ namespace licenta.Controllers
             }
             var dbTeacher = _mapper.Map<Entities.Teacher>(newTeacher);
             dbTeacher.Role = Entities.Constants.Role.User;
+            dbTeacher.Active = true;
             await _teacherRepository.CreateTeacher(dbTeacher);
 
             var teacherToReturn = _mapper.Map<TeacherDto>(dbTeacher);
@@ -79,7 +80,8 @@ namespace licenta.Controllers
                 return NotFound("Teacher does not exist");
             }
 
-            _teacherRepository.DeleteTeacher(teacher);
+            teacher.Active = false;
+
             await _teacherRepository.SaveChanges();
             return Ok();
 

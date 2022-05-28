@@ -4,7 +4,7 @@ namespace licenta.Services.Teachers
 {
     public interface ITeacherRepository
     {
-        Task<IEnumerable<Teacher>> GetAll();
+        Task<IEnumerable<Teacher>> GetAll(bool active);
         Task<Teacher?> GetById(Guid id);
         Task<bool> Exists(Guid id);
         Task<bool> Exists(string email);

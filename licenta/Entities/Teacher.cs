@@ -20,12 +20,16 @@ namespace licenta.Entities
 
         [Required]
         public Role Role { get; set; }
+        [Required]
+        public bool Active { get; set; }
 
-        public Teacher(string name, string email, Role role)
+
+        public Teacher(string name, string email, Role role, bool active)
         {
             Name = name;
             Email = email;
             Role = role;
+            Active = active;
         }
 
         public Teacher(string name, string email)
