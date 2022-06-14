@@ -20,9 +20,13 @@ namespace licenta.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetTeachers(bool active)
+        public async Task<ActionResult<IEnumerable<TeacherDto>>> GetTeachers(bool active, bool? list = false)
         {
             var teacherEntities = await _teacherRepository.GetAll(active);
+            if (list == true)
+            {
+                Ok(_mapper.Map<IEnumerable<TeacherListDto>>(teacherEntities));
+            }
             return Ok(_mapper.Map<IEnumerable<TeacherDto>>(teacherEntities));
 
         }

@@ -23,7 +23,6 @@ namespace licenta.Entities
         [Required]
         public bool Active { get; set; }
 
-
         public Teacher(string name, string email, Role role, bool active)
         {
             Name = name;

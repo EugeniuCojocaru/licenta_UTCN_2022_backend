@@ -1,6 +1,7 @@
 using licenta.DbContexts;
 using licenta.Services.InstitutionHierarchy;
 using licenta.Services.Subjects;
+using licenta.Services.Syllabuses;
 using licenta.Services.Teachers;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -28,7 +29,10 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IFacultyRepository, FacultyRepository>();
 builder.Services.AddScoped<IFieldOfStudyRepository, FieldOfStudyRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ISyllabusTeacherRepository, SyllabusTeacherRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ISection1Repository, Section1Repository>();
+builder.Services.AddScoped<ISection2Repository, Section2Repository>();
 
 var app = builder.Build();
 

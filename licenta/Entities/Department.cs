@@ -11,7 +11,7 @@ namespace licenta.Entities
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("FacultyId")]
         public Faculty? Faculty { get; set; }
@@ -22,6 +22,10 @@ namespace licenta.Entities
         public Department(string name)
         {
             Name = name;
+        }
+
+        public Department()
+        {
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using licenta.DbContexts;
@@ -11,9 +12,10 @@ using licenta.DbContexts;
 namespace licenta.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20220612225006_subject_syllabus_sections")]
+    partial class subject_syllabus_sections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,6 +173,9 @@ namespace licenta.Migrations
                     b.Property<int>("Semester")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("SyllabusId")
                         .HasColumnType("uuid");
 
@@ -181,6 +186,8 @@ namespace licenta.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("SyllabusId");
 
@@ -276,37 +283,14 @@ namespace licenta.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("Section1Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("Section2Id")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Section1Id");
-
-                    b.HasIndex("Section2Id");
-
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Syllabuses");
-                });
-
-            modelBuilder.Entity("licenta.Entities.SyllabusTeacher", b =>
-                {
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SyllabusId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("TeacherId", "SyllabusId");
-
-                    b.ToTable("SyllabusTeachers");
                 });
 
             modelBuilder.Entity("licenta.Entities.Teacher", b =>
@@ -414,6 +398,12 @@ namespace licenta.Migrations
 
             modelBuilder.Entity("licenta.Entities.Section2", b =>
                 {
+                    b.HasOne("licenta.Entities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("licenta.Entities.Syllabus", "Syllabus")
                         .WithMany()
                         .HasForeignKey("SyllabusId")
@@ -425,6 +415,8 @@ namespace licenta.Migrations
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Subject");
 
                     b.Navigation("Syllabus");
 
@@ -444,27 +436,11 @@ namespace licenta.Migrations
 
             modelBuilder.Entity("licenta.Entities.Syllabus", b =>
                 {
-                    b.HasOne("licenta.Entities.Section1", "Section1")
-                        .WithMany()
-                        .HasForeignKey("Section1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("licenta.Entities.Section2", "Section2")
-                        .WithMany()
-                        .HasForeignKey("Section2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("licenta.Entities.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Section1");
-
-                    b.Navigation("Section2");
 
                     b.Navigation("Subject");
                 });

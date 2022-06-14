@@ -35,5 +35,10 @@ namespace licenta.Services.InstitutionHierarchy
         {
             _context.FieldsOfStudy.Remove(fieldOfStudy);
         }
+
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _context.FieldsOfStudy.AnyAsync(i => i.Id == id);
+        }
     }
 }

@@ -74,9 +74,9 @@ namespace licenta.Controllers
 
             await _facultyRepository.SaveChanges();
 
-            var facultyToReturn = _mapper.Map<DepartmentWithoutFieldOfStudyDto>(department);
+            var departmentToReturn = _mapper.Map<DepartmentWithoutFieldOfStudyDto>(department);
 
-            return Ok(facultyToReturn);
+            return Ok(departmentToReturn);
         }
 
         [HttpPut]

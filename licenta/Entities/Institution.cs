@@ -11,13 +11,17 @@ namespace licenta.Entities
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public ICollection<Faculty> Faculties { get; set; } = new List<Faculty>();
 
-        public Institution (string name)
+        public Institution(string name)
         {
             Name = name;
+        }
+        public Institution()
+        {
+
         }
     }
 }

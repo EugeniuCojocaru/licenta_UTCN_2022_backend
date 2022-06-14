@@ -26,13 +26,17 @@ namespace licenta.Entities
         public Guid FieldOfStudyId { get; set; }
 
         [Required]
-        public string CycleOfStudy { get; set; } = "Bachelor of Science";
+        public string CycleOfStudy { get; set; } = String.Empty;
         [Required]
-        public string ProgramOfStudy { get; set; } = "Computer science";
+        public string ProgramOfStudy { get; set; } = String.Empty;
         [Required]
-        public string Qualification { get; set; } = "Engineer";
+        public string Qualification { get; set; } = String.Empty;
         [Required]
-        public string FormOfEducation { get; set; } = "Full time";
+        public string FormOfEducation { get; set; } = String.Empty;
 
+        [Required]
+        [ForeignKey("SyllabusId")]
+        public Syllabus? Syllabus { get; set; }
+        public Guid SyllabusId { get; set; }
     }
 }

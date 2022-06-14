@@ -11,21 +11,25 @@ namespace licenta.Entities
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
-        [Required]
         public int YearOfStudy { get; set; }
         [Required]
         public int Semester { get; set; }
         [Required]
         public TypeOfAssessment Assessment { get; set; }
+        [Required]
         public SubjectCategory1 Category1 { get; set; }
+        [Required]
         public SubjectCategory2 Category2 { get; set; }
 
-
+        [Required]
         [ForeignKey("TeacherId")]
-        public Teacher? Lecturer { get; set; }
-        public Guid LecturerId { get; set; }
-        public ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+        public Teacher? Teacher { get; set; }
+        public Guid TeacherId { get; set; }
+
+        [Required]
+        [ForeignKey("SyllabusId")]
+        public Syllabus? Syllabus { get; set; }
+        public Guid SyllabusId { get; set; }
     }
 }
+

@@ -8,6 +8,7 @@ namespace licenta.Profiles
         public TeacherProfile()
         {
             CreateMap<Entities.Teacher, TeacherDto>();
+            CreateMap<Entities.Teacher, TeacherListDto>();
             CreateMap<TeacherCreateDto, Entities.Teacher>();
             CreateMap<TeacherUpdateDto, Entities.Teacher>();
         }
