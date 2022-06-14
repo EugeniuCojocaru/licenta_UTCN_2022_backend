@@ -14,14 +14,12 @@ namespace licenta.Entities
         public Subject? Subject { get; set; }
         public Guid SubjectId { get; set; }
 
-        [Required]
         [ForeignKey("Section1Id")]
         public Section1? Section1 { get; set; }
-        public Guid Section1Id { get; set; }
+        public Guid? Section1Id { get; set; }
 
-        [Required]
         [ForeignKey("Section2Id")]
         public Section2? Section2 { get; set; }
-        public Guid Section2Id { get; set; }
+        public Guid? Section2Id { get; set; }
     }
 }

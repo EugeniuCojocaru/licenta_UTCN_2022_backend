@@ -16,13 +16,14 @@ namespace licenta.Controllers
         private readonly ISection1Repository _section1Repository;
         private readonly ISection2Repository _section2Repository;
         private readonly ISubjectRepository _subjectRepository;
-        private readonly ITeacherRepository _teacherRepository;
+        private readonly ISyllabusRepository _syllabusRepository;
+        private readonly ISyllabusTeacherRepository _syllabusTeacherRepository;
         private readonly IMapper _mapper;
         private readonly IInstitutionRepository _institutionRepository;
         private readonly IFacultyRepository _facultyRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
-        private readonly ISyllabusTeacherRepository _syllabusTeacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
 
         public SyllabusController(
             ISection1Repository section1Repository,
@@ -34,7 +35,7 @@ namespace licenta.Controllers
             IFacultyRepository facultyRepository,
             IDepartmentRepository departmentRepository,
             IFieldOfStudyRepository fieldOfStudyRepository,
-            ISyllabusTeacherRepository syllabusTeacherRepository)
+            ISyllabusTeacherRepository syllabusTeacherRepository, ISyllabusRepository syllabusRepository)
         {
             _section1Repository = section1Repository ?? throw new ArgumentNullException(nameof(section1Repository));
             _section2Repository = section2Repository ?? throw new ArgumentNullException(nameof(section2Repository));
@@ -46,6 +47,7 @@ namespace licenta.Controllers
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _fieldOfStudyRepository = fieldOfStudyRepository ?? throw new ArgumentNullException(nameof(fieldOfStudyRepository));
             _syllabusTeacherRepository = syllabusTeacherRepository ?? throw new ArgumentNullException(nameof(syllabusTeacherRepository));
+            _syllabusRepository = syllabusRepository ?? throw new ArgumentNullException(nameof(syllabusRepository));
         }
 
         [HttpGet]
@@ -58,7 +60,7 @@ namespace licenta.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateSyllabus([FromBody] SyllabusCreateDto newSyllabus)
+        public async Task<ActionResult<SyllabusDto>> CreateSyllabus([FromBody] SyllabusCreateDto newSyllabus)
         {
             if (await ValidateSection1(newSyllabus.section1) == false)
                 return NotFound("Error when validating section 1");
@@ -71,9 +73,16 @@ namespace licenta.Controllers
                 return NotFound("Could not find subject");
             }
 
+            var dbSyllabus = _mapper.Map<Syllabus>(newSyllabus);
+            await _syllabusRepository.CreateSyllabus(dbSyllabus);
 
+            var section1Id = await CreateSection1(newSyllabus.section1, dbSyllabus.Id);
+            var section2Id = await CreateSection2(newSyllabus.section2, dbSyllabus.Id);
 
-            return Ok("caca");
+            dbSyllabus.Section1Id = section1Id; dbSyllabus.Section2Id = section2Id;
+            await _syllabusRepository.SaveChanges();
+            var syllabusToReturn = _mapper.Map<SyllabusDto>(dbSyllabus);
+            return Ok(syllabusToReturn);
 
         }
 
@@ -108,7 +117,14 @@ namespace licenta.Controllers
 
             return true;
         }
-        private async Task<bool> CreateSection2(Section2CreateDto newEntry, Guid syllabusId)
+        private async Task<Guid> CreateSection1(Section1CreateDto newEntry, Guid syllabusId)
+        {
+            var dbSection1 = _mapper.Map<Section1>(newEntry);
+            dbSection1.SyllabusId = syllabusId;
+            await _section1Repository.CreateSection1(dbSection1);
+            return dbSection1.Id;
+        }
+        private async Task<Guid> CreateSection2(Section2CreateDto newEntry, Guid syllabusId)
         {
             var dbTeachers = await _syllabusTeacherRepository.GetAllBySyllabusId(syllabusId);
             foreach (SyllabusTeacher sb in dbTeachers)
@@ -122,14 +138,15 @@ namespace licenta.Controllers
             {
                 if (!dbTeachers.Any(i => i.TeacherId == id))
                 {
-                    if (await _syllabusTeacherRepository.CreateSyllabusTeacher(new SyllabusTeacher { TeacherId = id, SyllabusId = syllabusId }) == false)
-                        return false;
+                    await _syllabusTeacherRepository.CreateSyllabusTeacher(new SyllabusTeacher { TeacherId = id, SyllabusId = syllabusId });
+
                 }
             }
 
             var dbSection2 = _mapper.Map<Section2>(newEntry);
+            dbSection2.SyllabusId = syllabusId;
             await _section2Repository.CreateSection2(dbSection2);
-            return true;
+            return dbSection2.Id;
         }
 
     }
