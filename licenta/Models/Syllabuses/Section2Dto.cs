@@ -1,5 +1,4 @@
-﻿using licenta.Entities;
-using licenta.Models.Teachers;
+﻿using licenta.Models.Teachers;
 using static licenta.Entities.Constants;
 
 namespace licenta.Models.Syllabuses
@@ -14,6 +13,6 @@ namespace licenta.Models.Syllabuses
         public SubjectCategory1 Category1 { get; set; }
         public SubjectCategory2 Category2 { get; set; }
         public TeacherDto? Lecturer { get; set; }
-        public List<Section2Teacher>? Section2Teacher { get; set; } = new List<Section2Teacher>();
+
     }
 }

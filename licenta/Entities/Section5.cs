@@ -3,12 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace licenta.Entities
 {
-    public class Section4
+    public class Section5
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string Competences { get; set; } = string.Empty;
+
+        public string Course { get; set; } = string.Empty;
+        public string Application { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey("SyllabusId")]

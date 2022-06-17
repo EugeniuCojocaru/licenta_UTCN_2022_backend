@@ -9,6 +9,7 @@ namespace licenta.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        [Required]
         public int CourseHoursPerWeek { get; set; }
 
         public int SeminarHoursPerWeek { get; set; }
@@ -24,6 +25,7 @@ namespace licenta.Entities
             }
         }
 
+        [Required]
         public int CourseHoursPerSemester { get; set; }
 
         public int SeminarHoursPerSemester { get; set; }

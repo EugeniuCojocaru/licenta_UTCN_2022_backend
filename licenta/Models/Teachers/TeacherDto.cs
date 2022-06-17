@@ -1,5 +1,4 @@
-﻿using licenta.Entities;
-using static licenta.Entities.Constants;
+﻿using static licenta.Entities.Constants;
 
 namespace licenta.Models.Teachers
 {
@@ -11,7 +10,6 @@ namespace licenta.Models.Teachers
         public string Email { get; set; } = String.Empty;
 
         public Role Role { get; set; }
-        public IEnumerable<Section2Teacher> Section2Teacher { get; set; } = new List<Section2Teacher>();
 
     }
 }
