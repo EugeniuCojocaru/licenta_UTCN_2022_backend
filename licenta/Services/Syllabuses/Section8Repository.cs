@@ -13,6 +13,15 @@ namespace licenta.Services.Syllabuses
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public async Task AddElementToSection8(Guid section8Id, Section8Element section8Element)
+        {
+            var section8Db = await GetById(section8Id);
+            if (section8Db != null)
+            {
+                section8Db.Lectures.Add(section8Element);
+            }
+        }
+
         public async Task<bool> CreateSection8(Section8 newSection8)
         {
             if (newSection8 != null)

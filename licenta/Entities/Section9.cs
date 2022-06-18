@@ -9,6 +9,7 @@ namespace licenta.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         [Required]
         public string Description { get; set; } = string.Empty;
 

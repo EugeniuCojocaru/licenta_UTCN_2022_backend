@@ -31,9 +31,19 @@ builder.Services.AddScoped<IFieldOfStudyRepository, FieldOfStudyRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ISyllabusRepository, SyllabusRepository>();
 builder.Services.AddScoped<ISyllabusTeacherRepository, SyllabusTeacherRepository>();
+builder.Services.AddScoped<ISyllabusSubjectRepository, SyllabusSubjectRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISection1Repository, Section1Repository>();
 builder.Services.AddScoped<ISection2Repository, Section2Repository>();
+builder.Services.AddScoped<ISection3Repository, Section3Repository>();
+builder.Services.AddScoped<ISection4Repository, Section4Repository>();
+builder.Services.AddScoped<ISection5Repository, Section5Repository>();
+builder.Services.AddScoped<ISection6Repository, Section6Repository>();
+builder.Services.AddScoped<ISection7Repository, Section7Repository>();
+builder.Services.AddScoped<ISection8ElementRepository, Section8ElementRepository>();
+builder.Services.AddScoped<ISection8Repository, Section8Repository>();
+builder.Services.AddScoped<ISection9Repository, Section9Repository>();
+builder.Services.AddScoped<ISection10Repository, Section10Repository>();
 
 var app = builder.Build();
 

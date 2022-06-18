@@ -9,7 +9,7 @@ namespace licenta.Services.Syllabuses
         Task<bool> Exists(Guid id);
         Task<bool> SaveChanges();
         Task<bool> CreateSection8(Section8 newSection8);
-        Task AddElementToSection8(Guid elementId, Section8 section8);
+        Task AddElementToSection8(Guid section8Id, Section8Element section8Element);
         void DeleteSection8(Section8 section8);
     }
 }

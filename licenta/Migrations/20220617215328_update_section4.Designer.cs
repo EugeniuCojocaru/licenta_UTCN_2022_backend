@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using licenta.DbContexts;
@@ -11,9 +12,10 @@ using licenta.DbContexts;
 namespace licenta.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20220617215328_update_section4")]
+    partial class update_section4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,78 +153,6 @@ namespace licenta.Migrations
                     b.HasIndex("SyllabusId");
 
                     b.ToTable("Sections1");
-                });
-
-            modelBuilder.Entity("licenta.Entities.Section10", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ConditionsFinalExam")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConditionsPromotion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CourcePercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("CourseCriteria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CourseMethods")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LaboratoryCriteria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LaboratoryMethods")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("LaboratoryPercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MinimumPerformance")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProjectCriteria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProjectMethods")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProjectPercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SeminarCriteria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SeminarMethods")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SeminarPercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("SyllabusId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SyllabusId");
-
-                    b.ToTable("Sections10");
                 });
 
             modelBuilder.Entity("licenta.Entities.Section2", b =>
@@ -522,9 +452,6 @@ namespace licenta.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("Section10Id")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("Section1Id")
                         .HasColumnType("uuid");
 
@@ -556,8 +483,6 @@ namespace licenta.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Section10Id");
 
                     b.HasIndex("Section1Id");
 
@@ -711,17 +636,6 @@ namespace licenta.Migrations
                     b.Navigation("Syllabus");
                 });
 
-            modelBuilder.Entity("licenta.Entities.Section10", b =>
-                {
-                    b.HasOne("licenta.Entities.Syllabus", "Syllabus")
-                        .WithMany()
-                        .HasForeignKey("SyllabusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Syllabus");
-                });
-
             modelBuilder.Entity("licenta.Entities.Section2", b =>
                 {
                     b.HasOne("licenta.Entities.Syllabus", "Syllabus")
@@ -831,10 +745,6 @@ namespace licenta.Migrations
 
             modelBuilder.Entity("licenta.Entities.Syllabus", b =>
                 {
-                    b.HasOne("licenta.Entities.Section10", "Section10")
-                        .WithMany()
-                        .HasForeignKey("Section10Id");
-
                     b.HasOne("licenta.Entities.Section1", "Section1")
                         .WithMany()
                         .HasForeignKey("Section1Id");
@@ -878,8 +788,6 @@ namespace licenta.Migrations
                         .IsRequired();
 
                     b.Navigation("Section1");
-
-                    b.Navigation("Section10");
 
                     b.Navigation("Section2");
 

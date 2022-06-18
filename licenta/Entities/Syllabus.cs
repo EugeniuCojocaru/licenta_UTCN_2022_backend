@@ -49,5 +49,9 @@ namespace licenta.Entities
         [ForeignKey("Section9Id")]
         public Section9? Section9 { get; set; }
         public Guid? Section9Id { get; set; }
+
+        [ForeignKey("Section10Id")]
+        public Section10? Section10 { get; set; }
+        public Guid? Section10Id { get; set; }
     }
 }

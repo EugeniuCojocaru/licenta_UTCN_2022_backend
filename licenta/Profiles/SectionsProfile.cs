@@ -16,7 +16,11 @@ namespace licenta.Profiles
             //CreateMap<Entities.Section3, Section3Dto>();
             CreateMap<Section4CreateDto, Entities.Section4>().ForSourceMember(source => source.Subjects, opt => opt.DoNotValidate());
             //CreateMap<Entities.Section5, Section5Dto>();
+            //CreateMap<Entities.Section8, Section5Dto>();
+
+            CreateMap<Section8ElementCreateDto, Entities.Section8Element>();
             CreateMap<Section9CreateDto, Entities.Section9>();
+            CreateMap<Section10CreateDto, Entities.Section10>().ForSourceMember(source => source.ConditionsFinalExam, opt => opt.DoNotValidate());
         }
     }
 }

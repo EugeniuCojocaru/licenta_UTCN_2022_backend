@@ -13,17 +13,18 @@ namespace licenta.DbContexts
         public DbSet<Subject> Subjects { get; set; } = null!;
         public DbSet<Syllabus> Syllabuses { get; set; } = null!;
         public DbSet<SyllabusTeacher> SyllabusTeachers { get; set; } = null!;
+        public DbSet<SyllabusSubject> SyllabusSubjects { get; set; } = null!;
         public DbSet<Section1> Sections1 { get; set; } = null!;
         public DbSet<Section2> Sections2 { get; set; } = null!;
         public DbSet<Section3> Sections3 { get; set; } = null!;
         public DbSet<Section4> Sections4 { get; set; } = null!;
-        public DbSet<Section4Subject> Section4Subjects { get; set; } = null!;
         public DbSet<Section5> Sections5 { get; set; } = null!;
         public DbSet<Section6> Sections6 { get; set; } = null!;
         public DbSet<Section7> Sections7 { get; set; } = null!;
         public DbSet<Section8> Sections8 { get; set; } = null!;
         public DbSet<Section8Element> Section8Elements { get; set; } = null!;
         public DbSet<Section9> Sections9 { get; set; } = null!;
+        public DbSet<Section10> Sections10 { get; set; } = null!;
 
 
 
@@ -34,8 +35,8 @@ namespace licenta.DbContexts
         {
             modelBuilder.Entity<SyllabusTeacher>()
                 .HasKey(st => new { st.TeacherId, st.SyllabusId });
-            modelBuilder.Entity<Section4Subject>()
-               .HasKey(ss => new { ss.SubjectId, ss.Section4Id });
+            modelBuilder.Entity<SyllabusSubject>()
+               .HasKey(ss => new { ss.SubjectId, ss.SyllabusId });
         }
     }
 }

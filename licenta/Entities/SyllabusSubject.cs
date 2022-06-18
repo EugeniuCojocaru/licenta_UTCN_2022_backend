@@ -1,8 +1,8 @@
 ﻿namespace licenta.Entities
 {
-    public class Section4Subject
+    public class SyllabusSubject
     {
-        public Guid Section4Id { get; set; }
+        public Guid SyllabusId { get; set; }
         public Guid SubjectId { get; set; }
 
     }
