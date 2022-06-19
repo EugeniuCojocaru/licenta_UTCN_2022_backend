@@ -37,6 +37,11 @@ namespace licenta.Services.Subjects
         {
             return await _context.Subjects.AnyAsync(i => i.Code == code);
         }
+        public async Task<bool> Exists(string code, Guid id)
+        {
+
+            return await _context.Subjects.AnyAsync(i => i.Code == code && i.Id != id);
+        }
 
         public async Task<IEnumerable<Subject>> GetAll()
         {

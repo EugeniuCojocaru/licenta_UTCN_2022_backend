@@ -33,15 +33,6 @@ namespace licenta.Services.Syllabuses
         {
             return await _context.Sections2.AnyAsync(i => i.Id == id);
         }
-        /* public async Task AddFieldOfStudyToDepartment(Guid section2Id, Section2Teacher fieldOfStudy)
-         {
-             *//* var department = await GetById(section2Id);
-              if (department != null)
-              {
-                  department.FieldsOfStudy.Add(fieldOfStudy);
-              }*//*
-         }*/
-
         public async Task<IEnumerable<Section2>> GetAll()
         {
             return await _context.Sections2.ToListAsync();
@@ -51,7 +42,12 @@ namespace licenta.Services.Syllabuses
         {
             return await _context.Sections2.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
-
+        public async Task<Section2?> GetById(Guid? id)
+        {
+            if (id != null)
+                return await _context.Sections2.Where(i => i.Id == id).FirstOrDefaultAsync();
+            return null;
+        }
         public async Task<bool> SaveChanges()
         {
             return (await _context.SaveChangesAsync() >= 0);

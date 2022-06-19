@@ -8,6 +8,7 @@ namespace licenta.Services.Subjects
         Task<Subject?> GetById(Guid id);
         Task<bool> Exists(Guid id);
         Task<bool> Exists(string code);
+        Task<bool> Exists(string code, Guid id);
         Task<bool> SaveChanges();
         Task<bool> CreateSubject(Subject newSubject);
 

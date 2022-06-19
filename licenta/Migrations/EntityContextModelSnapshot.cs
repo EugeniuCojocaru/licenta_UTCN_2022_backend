@@ -159,11 +159,11 @@ namespace licenta.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ConditionsFinalExam")
+                    b.Property<string>("ConditionPromotion")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ConditionsPromotion")
+                    b.Property<string>("ConditionsFinalExam")
                         .IsRequired()
                         .HasColumnType("text");
 

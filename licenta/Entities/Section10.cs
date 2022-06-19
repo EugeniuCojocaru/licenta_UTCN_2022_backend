@@ -26,7 +26,7 @@ namespace licenta.Entities
         public string MinimumPerformance { get; set; } = string.Empty;
         public string ConditionsFinalExam { get; set; } = string.Empty;
         [Required]
-        public string ConditionsPromotion { get; set; } = string.Empty;
+        public string ConditionPromotion { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey("SyllabusId")]

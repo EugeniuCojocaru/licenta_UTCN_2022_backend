@@ -22,6 +22,7 @@
         }
         public static List<string> MapStringToStringList(string myString)
         {
+            if (myString.Equals("-")) return new List<string>();
             return myString.Split(SEPARATOR).ToList();
 
         }

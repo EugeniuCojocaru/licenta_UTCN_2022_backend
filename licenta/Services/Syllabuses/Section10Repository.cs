@@ -38,9 +38,11 @@ namespace licenta.Services.Syllabuses
             return await _context.Sections10.ToListAsync();
         }
 
-        public async Task<Section10?> GetById(Guid id)
+        public async Task<Section10?> GetById(Guid? id)
         {
-            return await _context.Sections10.Where(i => i.Id == id).FirstOrDefaultAsync();
+            if (id != null)
+                return await _context.Sections10.Where(i => i.Id == id).FirstOrDefaultAsync();
+            return null;
         }
 
         public async Task<bool> SaveChanges()

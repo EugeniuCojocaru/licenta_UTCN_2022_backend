@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using licenta.Entities;
+using licenta.Models.Subjects;
 using licenta.Models.Syllabuses;
+using licenta.Models.Teachers;
 using licenta.Services.InstitutionHierarchy;
 using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
@@ -47,7 +49,7 @@ namespace licenta.Controllers
                                   ISection8ElementRepository section8ElementRepository,
                                   ISection9Repository section9Repository,
                                   ISection10Repository section10Repository,
-        ISubjectRepository subjectRepository,
+                                  ISubjectRepository subjectRepository,
                                   ISyllabusRepository syllabusRepository,
                                   ISyllabusTeacherRepository syllabusTeacherRepository,
                                   ISyllabusSubjectRepository section4SubjectRepository,
@@ -82,13 +84,23 @@ namespace licenta.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Section1Dto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<SyllabusDto>>> GetAll()
         {
-            var teacherEntities = await _section2Repository.GetAll();
-
-            return Ok(_mapper.Map<IEnumerable<Section2Dto>>(teacherEntities));
-
+            var syllabusEntities = await _syllabusRepository.GetAll();
+            return Ok(_mapper.Map<IEnumerable<SyllabusDto>>(syllabusEntities));
         }
+        [HttpGet("subject/{id}")]
+        public async Task<ActionResult<SyllabusDto>> GetSyllabusBySubjectId(Guid id)
+        {
+            var syllabus = await _syllabusRepository.GetBySubjectId(id);
+            if (syllabus == null)
+            {
+                return NotFound();
+            }
+            var syllabusDto = await MapSyllabusToSyllabusDto(syllabus);
+            return Ok(syllabusDto);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<SyllabusDto>> CreateSyllabus([FromBody] SyllabusCreateDto newSyllabus)
@@ -118,6 +130,7 @@ namespace licenta.Controllers
             var section9Id = await CreateSection9(newSyllabus.section9, dbSyllabus.Id);
             var section10Id = await CreateSection10(newSyllabus.section10, dbSyllabus.Id);
             dbSyllabus.Section1Id = section1Id;
+            dbSyllabus.Section1 = await _section1Repository.GetById(section1Id);
             dbSyllabus.Section2Id = section2Id;
             dbSyllabus.Section3Id = section3Id;
             dbSyllabus.Section4Id = section4Id;
@@ -128,7 +141,7 @@ namespace licenta.Controllers
             dbSyllabus.Section9Id = section9Id;
             dbSyllabus.Section10Id = section10Id;
             await _syllabusRepository.SaveChanges();
-            var syllabusToReturn = _mapper.Map<SyllabusDto>(dbSyllabus);
+            var syllabusToReturn = await MapSyllabusToSyllabusDto(dbSyllabus);
             return Ok(syllabusToReturn);
 
         }
@@ -164,23 +177,6 @@ namespace licenta.Controllers
 
             return true;
         }
-        /* private async Task<bool> ValidateSection8(Section2CreateDto newEntry)
-         {
-             if (newEntry == null) return false;
-             if (await _teacherRepository.Exists(newEntry.TeacherId) == false)
-                 return false;
-
-             if (newEntry.Teachers.Count == 0)
-                 return false;
-
-             foreach (Guid id in newEntry.Teachers)
-             {
-                 if (await _teacherRepository.Exists(id) == false)
-                     return false;
-             }
-
-             return true;
-         }*/
 
         private async Task<Guid> CreateSection1(Section1CreateDto newEntry, Guid syllabusId)
         {
@@ -238,7 +234,7 @@ namespace licenta.Controllers
                 }
             }
 
-            string competences = StringConvertor.MapStringListToString(newEntry.Compentences);
+            string competences = StringConvertor.MapStringListToString(newEntry.Competences);
 
             var dbSection4 = new Section4 { Competences = competences, SyllabusId = syllabusId };
             await _section4Repository.CreateSection4(dbSection4);
@@ -322,7 +318,6 @@ namespace licenta.Controllers
             await _section9Repository.CreateSection9(dbSection9);
             return dbSection9.Id;
         }
-
         private async Task<Guid> CreateSection10(Section10CreateDto newEntry, Guid syllabusId)
         {
             var dbSection10 = _mapper.Map<Section10>(newEntry);
@@ -331,6 +326,177 @@ namespace licenta.Controllers
 
             await _section10Repository.CreateSection10(dbSection10);
             return dbSection10.Id;
+        }
+
+        private async Task<SyllabusDto> MapSyllabusToSyllabusDto(Syllabus syllabus)
+        {
+            var s1Dto = await Section1ToDto(syllabus.Section1Id);
+            var s2Dto = await Section2ToDto(syllabus.Section2Id, syllabus.Id);
+            var s3Dto = await Section3ToDto(syllabus.Section3Id);
+            var s4Dto = await Section4ToDto(syllabus.Section4Id, syllabus.Id);
+            var s5Dto = await Section5ToDto(syllabus.Section5Id);
+            var s6Dto = await Section6ToDto(syllabus.Section6Id);
+            var s7Dto = await Section7ToDto(syllabus.Section7Id);
+            var s8Dto = await Section8ToDto(syllabus.Section8Id);
+            var s9Dto = await Section9ToDto(syllabus.Section9Id);
+            var s10Dto = await Section10ToDto(syllabus.Section10Id);
+
+            var syllabusDto = new SyllabusDto
+            {
+                Id = syllabus.Id,
+                Subject = _mapper.Map<SubjectDto>(syllabus.Subject),
+                Section1 = s1Dto,
+                Section2 = s2Dto,
+                Section3 = s3Dto,
+                Section4 = s4Dto,
+                Section5 = s5Dto,
+                Section6 = s6Dto,
+                Section7 = s7Dto,
+                Section8 = s8Dto,
+                Section9 = s9Dto,
+                Section10 = s10Dto,
+            };
+            /* syllabusDto.Section1 = s1Dto;
+             syllabusDto.Section2 = s2Dto;
+             syllabusDto.Section3 = s3Dto;
+             syllabusDto.Section4 = s4Dto;
+             syllabusDto.Section5 = s5Dto;
+             syllabusDto.Section6 = s6Dto;
+             syllabusDto.Section7 = s7Dto;
+             syllabusDto.Section8 = s8Dto;
+             syllabusDto.Section9 = s9Dto;
+             syllabusDto.Section10 = s10Dto;*/
+
+            return syllabusDto;
+        }
+
+        private async Task<Section1Dto> Section1ToDto(Guid? id)
+        {
+            var section1Db = await _section1Repository.GetById(id);
+            var section1Dto = _mapper.Map<Section1Dto>(section1Db);
+            return section1Dto;
+        }
+        private async Task<Section2Dto> Section2ToDto(Guid? id, Guid syllabusId)
+        {
+            var sDb = await _section2Repository.GetById(id);
+            var sDto = _mapper.Map<Section2Dto>(sDb);
+            var lecturer = await _teacherRepository.GetById(sDb.TeacherId);
+            var lecturerDto = _mapper.Map<TeacherDto>(lecturer);
+            var teacherIds = await _syllabusTeacherRepository.GetAllBySyllabusId(syllabusId);
+            List<TeacherDto> teachers = new();
+            foreach (var teacherId in teacherIds)
+            {
+                var teacherDb = await _teacherRepository.GetById(teacherId.TeacherId);
+                var teacherDto = _mapper.Map<TeacherDto>(teacherDb);
+                teachers.Add(teacherDto);
+            }
+            sDto.Teacher = lecturerDto;
+            sDto.Teachers = teachers;
+
+            return sDto;
+        }
+        private async Task<Section3Dto> Section3ToDto(Guid? id)
+        {
+            var sDb = await _section3Repository.GetById(id);
+            var sDto = _mapper.Map<Section3Dto>(sDb);
+            return sDto;
+        }
+        private async Task<Section4Dto> Section4ToDto(Guid? id, Guid syllabusId)
+        {
+            var sDb = await _section4Repository.GetById(id);
+            var subjectIds = await _syllabusSubjectRepository.GetAllBySyllabusId(syllabusId);
+            List<SubjectDto> subjects = new();
+            foreach (var subjectId in subjectIds)
+            {
+                var subjectDb = await _subjectRepository.GetById(subjectId.SubjectId);
+                var subjectDto = _mapper.Map<SubjectDto>(subjectDb);
+                subjects.Add(subjectDto);
+            }
+            var sDto = new Section4Dto
+            {
+                Id = sDb.Id,
+                Compentences = StringConvertor.MapStringToStringList(sDb.Competences),
+                Subjects = subjects,
+            };
+
+            return sDto;
+        }
+        private async Task<Section5Dto> Section5ToDto(Guid? id)
+        {
+            var sDb = await _section5Repository.GetById(id);
+            var sDto = new Section5Dto
+            {
+                Id = sDb.Id,
+                Application = StringConvertor.MapStringToStringList(sDb.Application),
+                Course = StringConvertor.MapStringToStringList(sDb.Course),
+            };
+            return sDto;
+        }
+        private async Task<Section6Dto> Section6ToDto(Guid? id)
+        {
+            var sDb = await _section6Repository.GetById(id);
+            var sDto = new Section6Dto
+            {
+                Id = sDb.Id,
+                Professional = StringConvertor.MapStringToStringList(sDb.Professional),
+                Cross = StringConvertor.MapStringToStringList(sDb.Cross),
+            };
+            return sDto;
+        }
+        private async Task<Section7Dto> Section7ToDto(Guid? id)
+        {
+            var sDb = await _section7Repository.GetById(id);
+            var sDto = new Section7Dto
+            {
+                Id = sDb.Id,
+                GeneralObjective = sDb.GeneralObjective,
+                SpecificObjectives = StringConvertor.MapStringToStringList(sDb.SpecificObjectives),
+            };
+            return sDto;
+        }
+        private async Task<Section8Dto> Section8ToDto(Guid? id)
+        {
+            var sDb = await _section8Repository.GetById(id);
+            var lectures = await _section8ElementRepository.GetAllBySection8Id(sDb.Id);
+            var lecturesCourse = new List<Section8ElementDto>();
+            var lecturesLab = new List<Section8ElementDto>();
+
+            foreach (var lecture in lectures)
+            {
+                if (lecture.IsCourse)
+                {
+                    lecturesCourse.Add(_mapper.Map<Section8ElementDto>(lecture));
+                }
+                else
+                {
+                    lecturesLab.Add(_mapper.Map<Section8ElementDto>(lecture));
+                }
+            }
+
+            var sDto = new Section8Dto
+            {
+                Id = sDb.Id,
+                TeachingMethodsCourse = StringConvertor.MapStringToStringList(sDb.TeachingMethodsCourse),
+                TeachingMethodsLab = StringConvertor.MapStringToStringList(sDb.TeachingMethodsLab),
+                BibliographyCourse = StringConvertor.MapStringToStringList(sDb.BibliographyCourse),
+                BibliographyLab = StringConvertor.MapStringToStringList(sDb.BibliographyLab),
+                LecturesCourse = lecturesCourse,
+                LecturesLab = lecturesLab
+            };
+            return sDto;
+        }
+        private async Task<Section9Dto> Section9ToDto(Guid? id)
+        {
+            var sDb = await _section9Repository.GetById(id);
+            var sDto = _mapper.Map<Section9Dto>(sDb);
+            return sDto;
+        }
+        private async Task<Section10Dto> Section10ToDto(Guid? id)
+        {
+            var sDb = await _section10Repository.GetById(id);
+            var sDto = _mapper.Map<Section10Dto>(sDb);
+            sDto.ConditionsFinalExam = StringConvertor.MapStringToStringList(sDb.ConditionsFinalExam);
+            return sDto;
         }
     }
 }

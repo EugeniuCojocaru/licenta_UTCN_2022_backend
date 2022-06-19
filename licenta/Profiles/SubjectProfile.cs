@@ -8,6 +8,7 @@ namespace licenta.Profiles
         {
             CreateMap<Entities.Subject, SubjectDto>();
             CreateMap<SubjectCreateDto, Entities.Subject>();
+            CreateMap<SubjectUpdateDto, Entities.Subject>();
         }
 
     }

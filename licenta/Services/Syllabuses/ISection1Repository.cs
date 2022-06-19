@@ -5,6 +5,7 @@ namespace licenta.Services.Syllabuses
     public interface ISection1Repository
     {
         Task<IEnumerable<Section1>> GetAll();
+        Task<Section1?> GetById(Guid? id);
         Task<Section1?> GetById(Guid id);
         Task<bool> Exists(Guid id);
         Task<bool> SaveChanges();

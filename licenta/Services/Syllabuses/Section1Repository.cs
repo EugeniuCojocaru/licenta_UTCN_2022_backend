@@ -43,6 +43,13 @@ namespace licenta.Services.Syllabuses
             return await _context.Sections1.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<Section1?> GetById(Guid? id)
+        {
+            if (id != null)
+                return await _context.Sections1.Where(i => i.Id == id).FirstOrDefaultAsync();
+            return null;
+        }
+
         public async Task<bool> SaveChanges()
         {
             return (await _context.SaveChangesAsync() >= 0);

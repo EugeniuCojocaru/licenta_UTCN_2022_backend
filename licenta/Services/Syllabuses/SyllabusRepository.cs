@@ -42,7 +42,10 @@ namespace licenta.Services.Syllabuses
         {
             return await _context.Syllabuses.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
-
+        public async Task<Syllabus?> GetBySubjectId(Guid id)
+        {
+            return await _context.Syllabuses.Where(i => i.SubjectId == id).FirstOrDefaultAsync();
+        }
         public async Task<bool> SaveChanges()
         {
             return (await _context.SaveChangesAsync() >= 0);

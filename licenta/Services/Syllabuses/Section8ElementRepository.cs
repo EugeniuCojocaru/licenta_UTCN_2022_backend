@@ -37,7 +37,10 @@ namespace licenta.Services.Syllabuses
         {
             return await _context.Section8Elements.ToListAsync();
         }
-
+        public async Task<IEnumerable<Section8Element>> GetAllBySection8Id(Guid id)
+        {
+            return await _context.Section8Elements.Where(i => i.Section8Id == id).ToListAsync();
+        }
         public async Task<Section8Element?> GetById(Guid id)
         {
             return await _context.Section8Elements.Where(i => i.Id == id).FirstOrDefaultAsync();
