@@ -50,7 +50,9 @@ namespace licenta.Controllers
             {
                 return Conflict("Same email not allowed");
             }
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newTeacher.Password);
             var dbTeacher = _mapper.Map<Entities.Teacher>(newTeacher);
+            dbTeacher.Password = hashedPassword;
             dbTeacher.Role = Entities.Constants.Role.User;
             dbTeacher.Active = true;
             await _teacherRepository.CreateTeacher(dbTeacher);

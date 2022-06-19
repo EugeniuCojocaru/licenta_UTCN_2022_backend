@@ -70,3 +70,9 @@ C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\licenta.pdb
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\licenta.genruntimeconfig.cache
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\ref\licenta.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\BCrypt.Net-Next.dll

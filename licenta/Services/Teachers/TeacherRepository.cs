@@ -1,6 +1,7 @@
 ﻿using licenta.DbContexts;
 using licenta.Entities;
 using Microsoft.EntityFrameworkCore;
+using static licenta.Entities.Constants;
 
 namespace licenta.Services.Teachers
 {
@@ -37,6 +38,18 @@ namespace licenta.Services.Teachers
         {
             return await _context.Teachers.AnyAsync(i => i.Email == email);
         }
+        public async Task<Guid?> Exists(string email, string password)
+        {
+
+            var user = await _context.Teachers.Where(i => i.Email == email).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                    return user.Id;
+            }
+
+            return null;
+        }
 
         public async Task<IEnumerable<Teacher>> GetAll(bool active)
         {
@@ -50,6 +63,12 @@ namespace licenta.Services.Teachers
         public async Task<Teacher?> GetById(Guid id)
         {
             return await _context.Teachers.Where(i => i.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Role> GetRoleById(Guid id)
+        {
+            var user = await _context.Teachers.Where(i => i.Id == id).FirstOrDefaultAsync();
+            return user.Role;
         }
 
         public async Task<bool> SaveChanges()

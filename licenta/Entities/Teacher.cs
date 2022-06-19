@@ -17,6 +17,9 @@ namespace licenta.Entities
         [Required]
         [MaxLength(100)]
         public string Email { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Password { get; set; }
 
         [Required]
         public Role Role { get; set; }

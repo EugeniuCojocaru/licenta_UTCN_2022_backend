@@ -9,6 +9,8 @@ namespace licenta.Models.Teachers
 
         [Required(ErrorMessage = "You should provide an email")]
         public string Email { get; set; } = String.Empty;
+        [Required(ErrorMessage = "You should provide a password")]
+        public string Password { get; set; } = String.Empty;
 
     }
 }
