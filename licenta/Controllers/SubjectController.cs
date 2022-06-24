@@ -3,11 +3,13 @@ using licenta.Entities;
 using licenta.Models.Subjects;
 using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/subjects")]
     public class SubjectController : ControllerBase
     {

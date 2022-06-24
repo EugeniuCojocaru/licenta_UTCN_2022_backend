@@ -34,12 +34,13 @@ namespace licenta.Controllers
                 {
                     return Unauthorized();
                 }
-
+                var role = await _teacherRepository.GetRoleById(userId);
                 var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
                 var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 var claimsForToken = new List<Claim>();
                 claimsForToken.Add(new Claim("sub", userId.ToString()));
+                claimsForToken.Add(new Claim("role", role.ToString()));
 
                 var jwtToken = new JwtSecurityToken(
                    _config["Authentication:Issuer"],

@@ -65,10 +65,14 @@ namespace licenta.Services.Teachers
             return await _context.Teachers.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Role> GetRoleById(Guid id)
+        public async Task<Role?> GetRoleById(Guid? id)
         {
-            var user = await _context.Teachers.Where(i => i.Id == id).FirstOrDefaultAsync();
-            return user.Role;
+            if (id != null)
+            {
+                var user = await _context.Teachers.Where(i => i.Id == id).FirstOrDefaultAsync();
+                return user.Role;
+            }
+            return null;
         }
 
         public async Task<bool> SaveChanges()

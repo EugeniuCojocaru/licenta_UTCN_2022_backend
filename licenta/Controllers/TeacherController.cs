@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using licenta.Models.Teachers;
 using licenta.Services.Teachers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
@@ -78,6 +79,7 @@ namespace licenta.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> DeleteTeacher(Guid id)
         {
             var teacher = await _teacherRepository.GetById(id);

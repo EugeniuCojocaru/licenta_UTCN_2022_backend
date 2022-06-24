@@ -7,7 +7,7 @@ namespace licenta.Services.Teachers
     {
         Task<IEnumerable<Teacher>> GetAll(bool active);
         Task<Teacher?> GetById(Guid id);
-        Task<Role> GetRoleById(Guid id);
+        Task<Role?> GetRoleById(Guid? id);
         Task<bool> Exists(Guid id);
         Task<bool> Exists(string email);
         Task<Guid?> Exists(string email, string password);
