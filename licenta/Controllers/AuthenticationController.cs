@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using licenta.Models.Authentication;
+﻿using licenta.Models.Authentication;
 using licenta.Services.Teachers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,13 +13,12 @@ namespace licenta.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ITeacherRepository _teacherRepository;
-        private readonly IMapper _mapper;
+
         private readonly IConfiguration _config;
 
-        public AuthenticationController(ITeacherRepository teacherRepository, IMapper mapper, IConfiguration config)
+        public AuthenticationController(ITeacherRepository teacherRepository, IConfiguration config)
         {
             _teacherRepository = teacherRepository ?? throw new ArgumentNullException(nameof(teacherRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 

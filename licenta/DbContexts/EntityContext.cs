@@ -25,6 +25,7 @@ namespace licenta.DbContexts
         public DbSet<Section8Element> Section8Elements { get; set; } = null!;
         public DbSet<Section9> Sections9 { get; set; } = null!;
         public DbSet<Section10> Sections10 { get; set; } = null!;
+        public DbSet<Audit> Audits { get; set; } = null!;
 
 
 

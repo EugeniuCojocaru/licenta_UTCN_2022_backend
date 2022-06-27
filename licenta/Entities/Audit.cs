@@ -10,7 +10,6 @@ namespace licenta.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Required]
-        public User? User { get; set; }
         public Guid UserId { get; set; }
         [Required]
         public Operation Operation { get; set; }
@@ -18,6 +17,9 @@ namespace licenta.Entities
         public EntityNames Entity { get; set; }
 
         public string Notes { get; set; } = string.Empty;
+
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
     }

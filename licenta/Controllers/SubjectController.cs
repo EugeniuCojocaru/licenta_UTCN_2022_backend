@@ -1,24 +1,26 @@
 ﻿using AutoMapper;
 using licenta.Entities;
 using licenta.Models.Subjects;
+using licenta.Services.Audits;
 using licenta.Services.Subjects;
-using licenta.Services.Syllabuses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/subjects")]
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectRepository _subjectRepository;
-        private readonly ISyllabusRepository _syllabusRepository;
+        private readonly IAuditRepository _auditRepository;
         private readonly IMapper _mapper;
 
-        public SubjectController(ISubjectRepository subjectRepository, ISyllabusRepository syllabusRepository, IMapper mapper)
+        public SubjectController(ISubjectRepository subjectRepository, IAuditRepository auditRepository, IMapper mapper)
         {
             _subjectRepository = subjectRepository ?? throw new ArgumentNullException(nameof(subjectRepository));
-            _syllabusRepository = syllabusRepository ?? throw new ArgumentNullException(nameof(syllabusRepository));
+            _auditRepository = auditRepository ?? throw new ArgumentNullException(nameof(auditRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -40,17 +42,6 @@ namespace licenta.Controllers
             return Ok(_mapper.Map<SubjectDto>(subject));
 
         }
-        [HttpGet("{id}/syllabus")]
-        public async Task<ActionResult> GetSyllabus(Guid id)
-        {
-            var syllabus = await _syllabusRepository.GetBySubjectId(id);
-            if (syllabus == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<Syllabus>(syllabus));
-
-        }
 
         [HttpPost]
         public async Task<ActionResult<SubjectDto>> CreateSubject(SubjectCreateDto newSubject)
@@ -61,6 +52,15 @@ namespace licenta.Controllers
             }
             var dbSubject = _mapper.Map<Entities.Subject>(newSubject);
             await _subjectRepository.CreateSubject(dbSubject);
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.CREATE,
+                Entity = Constants.EntityNames.Subject,
+            };
+            await _auditRepository.CreateAudit(dbAudit);
 
             var subjectToReturn = _mapper.Map<SubjectDto>(dbSubject);
             return Ok(subjectToReturn);
@@ -79,9 +79,19 @@ namespace licenta.Controllers
             {
                 return Conflict("Same code not allowed");
             }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.UPDATE,
+                Entity = Constants.EntityNames.Subject,
+                Notes = oldSubject.Name + " -> " + updatedSubject.Name,
+            };
+
             _mapper.Map(updatedSubject, oldSubject);
             await _subjectRepository.SaveChanges();
-
+            await _auditRepository.CreateAudit(dbAudit);
             return Ok();
         }
 
@@ -95,6 +105,17 @@ namespace licenta.Controllers
             }
             _subjectRepository.DeleteSubject(subject);
             await _subjectRepository.SaveChanges();
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.DELETE,
+                Entity = Constants.EntityNames.Subject,
+                Notes = subject.Name
+            };
+            await _auditRepository.CreateAudit(dbAudit);
+
             return Ok();
 
         }

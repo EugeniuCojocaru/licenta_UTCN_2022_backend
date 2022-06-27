@@ -1,26 +1,34 @@
 ﻿using AutoMapper;
+using licenta.Entities;
 using licenta.Models.InstitutionHierarchy;
+using licenta.Services.Audits;
 using licenta.Services.InstitutionHierarchy;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/departments")]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IFacultyRepository _facultyRepository;
         private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
+        private readonly IAuditRepository _auditRepository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository departmentRepository, IFacultyRepository facultyRepository, IFieldOfStudyRepository fieldOfStudyRepository, IMapper mapper)
+        public DepartmentController(IDepartmentRepository departmentRepository, IFacultyRepository facultyRepository, IFieldOfStudyRepository fieldOfStudyRepository, IAuditRepository auditRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
             _fieldOfStudyRepository = fieldOfStudyRepository ?? throw new ArgumentNullException(nameof(fieldOfStudyRepository));
+            _auditRepository = auditRepository ?? throw new ArgumentNullException(nameof(auditRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
+
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartmentWithoutFieldOfStudyDto>>> GetDepartments()
@@ -74,6 +82,15 @@ namespace licenta.Controllers
 
             await _facultyRepository.SaveChanges();
 
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.CREATE,
+                Entity = Constants.EntityNames.Department,
+            };
+            await _auditRepository.CreateAudit(dbAudit);
+
             var departmentToReturn = _mapper.Map<DepartmentWithoutFieldOfStudyDto>(department);
 
             return Ok(departmentToReturn);
@@ -90,8 +107,18 @@ namespace licenta.Controllers
             var oldDepartment = await _departmentRepository.GetById(departmentDto.Id);
             if (oldDepartment == null || oldDepartment.FacultyId != facultyId) { return NotFound("Department not found for the faculty"); }
 
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.UPDATE,
+                Entity = Constants.EntityNames.Department,
+                Notes = oldDepartment.Name + " -> " + departmentDto.Name,
+            };
+
             _mapper.Map(departmentDto, oldDepartment);
             await _departmentRepository.SaveChanges();
+            await _auditRepository.CreateAudit(dbAudit);
 
             return Ok();
         }
@@ -109,6 +136,15 @@ namespace licenta.Controllers
 
             _departmentRepository.DeleteDepartment(oldDepartment);
             await _departmentRepository.SaveChanges();
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.DELETE,
+                Entity = Constants.EntityNames.Department,
+                Notes = oldDepartment.Name
+            };
+            await _auditRepository.CreateAudit(dbAudit);
 
             return Ok();
         }

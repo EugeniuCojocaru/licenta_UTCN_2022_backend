@@ -1,4 +1,5 @@
 using licenta.DbContexts;
+using licenta.Services.Audits;
 using licenta.Services.InstitutionHierarchy;
 using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
@@ -72,6 +73,7 @@ builder.Services.AddScoped<ISection8ElementRepository, Section8ElementRepository
 builder.Services.AddScoped<ISection8Repository, Section8Repository>();
 builder.Services.AddScoped<ISection9Repository, Section9Repository>();
 builder.Services.AddScoped<ISection10Repository, Section10Repository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
