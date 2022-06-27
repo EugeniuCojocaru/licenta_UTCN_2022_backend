@@ -8,13 +8,11 @@ using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
 using licenta.Services.Teachers;
 using licenta.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/syllabuses")]
     public class SyllabusController : ControllerBase
     {

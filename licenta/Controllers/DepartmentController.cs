@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using licenta.Models.InstitutionHierarchy;
 using licenta.Services.InstitutionHierarchy;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/departments")]
     public class DepartmentController : ControllerBase
     {
