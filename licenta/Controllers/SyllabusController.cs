@@ -31,6 +31,7 @@ namespace licenta.Controllers
         private readonly ISyllabusRepository _syllabusRepository;
         private readonly ISyllabusTeacherRepository _syllabusTeacherRepository;
         private readonly ISyllabusSubjectRepository _syllabusSubjectRepository;
+        private readonly ISyllabusVersionRepository _syllabusVersionRepository;
         private readonly IMapper _mapper;
         private readonly IInstitutionRepository _institutionRepository;
         private readonly IFacultyRepository _facultyRepository;
@@ -38,27 +39,7 @@ namespace licenta.Controllers
         private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
         private readonly ITeacherRepository _teacherRepository;
 
-        public SyllabusController(ISection1Repository section1Repository,
-                                  ISection2Repository section2Repository,
-                                  ISection3Repository section3Repository,
-                                  ISection4Repository section4Repository,
-                                  ISection5Repository section5Repository,
-                                  ISection6Repository section6Repository,
-                                  ISection7Repository section7Repository,
-                                  ISection8Repository section8Repository,
-                                  ISection8ElementRepository section8ElementRepository,
-                                  ISection9Repository section9Repository,
-                                  ISection10Repository section10Repository,
-                                  ISubjectRepository subjectRepository,
-                                  ISyllabusRepository syllabusRepository,
-                                  ISyllabusTeacherRepository syllabusTeacherRepository,
-                                  ISyllabusSubjectRepository section4SubjectRepository,
-                                  IMapper mapper,
-                                  IInstitutionRepository institutionRepository,
-                                  IFacultyRepository facultyRepository,
-                                  IDepartmentRepository departmentRepository,
-                                  IFieldOfStudyRepository fieldOfStudyRepository,
-                                  ITeacherRepository teacherRepository)
+        public SyllabusController(ISection1Repository section1Repository, ISection2Repository section2Repository, ISection3Repository section3Repository, ISection4Repository section4Repository, ISection5Repository section5Repository, ISection6Repository section6Repository, ISection7Repository section7Repository, ISection8Repository section8Repository, ISection8ElementRepository section8ElementRepository, ISection9Repository section9Repository, ISection10Repository section10Repository, ISubjectRepository subjectRepository, ISyllabusRepository syllabusRepository, ISyllabusTeacherRepository syllabusTeacherRepository, ISyllabusSubjectRepository syllabusSubjectRepository, ISyllabusVersionRepository syllabusVersionRepository, IMapper mapper, IInstitutionRepository institutionRepository, IFacultyRepository facultyRepository, IDepartmentRepository departmentRepository, IFieldOfStudyRepository fieldOfStudyRepository, ITeacherRepository teacherRepository)
         {
             _section1Repository = section1Repository ?? throw new ArgumentNullException(nameof(section1Repository));
             _section2Repository = section2Repository ?? throw new ArgumentNullException(nameof(section2Repository));
@@ -74,7 +55,8 @@ namespace licenta.Controllers
             _subjectRepository = subjectRepository ?? throw new ArgumentNullException(nameof(subjectRepository));
             _syllabusRepository = syllabusRepository ?? throw new ArgumentNullException(nameof(syllabusRepository));
             _syllabusTeacherRepository = syllabusTeacherRepository ?? throw new ArgumentNullException(nameof(syllabusTeacherRepository));
-            _syllabusSubjectRepository = section4SubjectRepository ?? throw new ArgumentNullException(nameof(section4SubjectRepository));
+            _syllabusSubjectRepository = syllabusSubjectRepository ?? throw new ArgumentNullException(nameof(syllabusSubjectRepository));
+            _syllabusVersionRepository = syllabusVersionRepository ?? throw new ArgumentNullException(nameof(syllabusVersionRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _institutionRepository = institutionRepository ?? throw new ArgumentNullException(nameof(institutionRepository));
             _facultyRepository = facultyRepository ?? throw new ArgumentNullException(nameof(facultyRepository));
@@ -115,7 +97,10 @@ namespace licenta.Controllers
             {
                 return NotFound("Could not find subject");
             }
-
+            if (await _syllabusVersionRepository.SubjectHasSyllabus(newSyllabus.SubjectId))
+            {
+                return BadRequest("Subject already has a syllabus");
+            }
             var dbSyllabus = new Syllabus { SubjectId = newSyllabus.SubjectId };
             await _syllabusRepository.CreateSyllabus(dbSyllabus);
 
@@ -130,7 +115,6 @@ namespace licenta.Controllers
             var section9Id = await CreateSection9(newSyllabus.section9, dbSyllabus.Id);
             var section10Id = await CreateSection10(newSyllabus.section10, dbSyllabus.Id);
             dbSyllabus.Section1Id = section1Id;
-            dbSyllabus.Section1 = await _section1Repository.GetById(section1Id);
             dbSyllabus.Section2Id = section2Id;
             dbSyllabus.Section3Id = section3Id;
             dbSyllabus.Section4Id = section4Id;
@@ -141,6 +125,12 @@ namespace licenta.Controllers
             dbSyllabus.Section9Id = section9Id;
             dbSyllabus.Section10Id = section10Id;
             await _syllabusRepository.SaveChanges();
+
+            var syllabusVersion = new SyllabusVersion
+            {
+                SyllabusId = dbSyllabus.Id
+            };
+            await _syllabusVersionRepository.CreateSyllabusVersion(syllabusVersion);
             var syllabusToReturn = await MapSyllabusToSyllabusDto(dbSyllabus);
             return Ok(syllabusToReturn);
 

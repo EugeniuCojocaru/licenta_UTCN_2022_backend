@@ -61,6 +61,7 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ISyllabusRepository, SyllabusRepository>();
 builder.Services.AddScoped<ISyllabusTeacherRepository, SyllabusTeacherRepository>();
 builder.Services.AddScoped<ISyllabusSubjectRepository, SyllabusSubjectRepository>();
+builder.Services.AddScoped<ISyllabusVersionRepository, SyllabusVersionRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISection1Repository, Section1Repository>();
 builder.Services.AddScoped<ISection2Repository, Section2Repository>();

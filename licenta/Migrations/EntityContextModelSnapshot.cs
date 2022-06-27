@@ -28,8 +28,7 @@ namespace licenta.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Entity")
@@ -636,6 +635,28 @@ namespace licenta.Migrations
                     b.ToTable("SyllabusTeachers");
                 });
 
+            modelBuilder.Entity("licenta.Entities.SyllabusVersion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SyllabusId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SyllabusId");
+
+                    b.ToTable("SyllabusVersions");
+                });
+
             modelBuilder.Entity("licenta.Entities.Teacher", b =>
                 {
                     b.Property<Guid>("Id")
@@ -931,6 +952,17 @@ namespace licenta.Migrations
                     b.Navigation("Section9");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("licenta.Entities.SyllabusVersion", b =>
+                {
+                    b.HasOne("licenta.Entities.Syllabus", "Syllabus")
+                        .WithMany()
+                        .HasForeignKey("SyllabusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Syllabus");
                 });
 
             modelBuilder.Entity("licenta.Entities.Department", b =>

@@ -10,6 +10,6 @@
         }
         public enum SubjectCategory2 { Mandatory = 0, Optional = 1, Dispensable = 2 }
         public enum Operation { CREATE = 0, UPDATE = 1, DELETE = 2 }
-        public enum EntityNames { Institution = 0, Faculty = 1, Department = 2, FieldOfStudy = 3, Subject = 4, Teacher = 5 }
+        public enum EntityNames { Institution = 0, Faculty = 1, Department = 2, FieldOfStudy = 3, Subject = 4, Teacher = 5, Syllabus = 6 }
     }
 }
