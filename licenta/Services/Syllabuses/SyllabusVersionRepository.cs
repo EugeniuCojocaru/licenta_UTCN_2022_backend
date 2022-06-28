@@ -29,7 +29,7 @@ namespace licenta.Services.Syllabuses
 
         public async Task<IEnumerable<SyllabusVersion>> GetAllBySubjectId(Guid SubjectId)
         {
-            return await _context.SyllabusVersions.Where(i => i.Syllabus.SubjectId == SubjectId).ToListAsync();
+            return await _context.SyllabusVersions.Where(i => i.Syllabus.SubjectId == SubjectId).OrderByDescending(i => i.CreatedAt).ToListAsync();
 
         }
 

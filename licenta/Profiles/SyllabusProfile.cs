@@ -8,6 +8,7 @@ namespace licenta.Profiles
         public SyllabusProfile()
         {
             CreateMap<Entities.Syllabus, SyllabusDto>();
+            CreateMap<Entities.SyllabusVersion, SyllabusVersionDto>();
         }
     }
 }

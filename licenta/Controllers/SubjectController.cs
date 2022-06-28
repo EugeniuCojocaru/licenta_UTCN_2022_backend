@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using licenta.Entities;
 using licenta.Models.Subjects;
+using licenta.Models.Syllabuses;
 using licenta.Services.Audits;
 using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
@@ -53,7 +54,18 @@ namespace licenta.Controllers
             return Ok(_mapper.Map<SubjectDto>(subject));
 
         }
+        [HttpGet("{subjectId}/history")]
+        public async Task<ActionResult> GetSyllabusVersionsBySubjectId(Guid subjectId)
+        {
+            var subject = await _subjectRepository.GetById(subjectId);
+            if (subject == null)
+            {
+                return NotFound("Could not find subject");
+            }
+            var versions = await _syllabusVersionRepository.GetAllBySubjectId(subjectId);
+            return Ok(_mapper.Map<IEnumerable<SyllabusVersionDto>>(versions));
 
+        }
         [HttpPost]
         public async Task<ActionResult<SubjectDto>> CreateSubject(SubjectCreateDto newSubject)
         {
