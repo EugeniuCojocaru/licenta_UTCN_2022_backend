@@ -244,6 +244,30 @@ namespace licenta.Controllers
 
         }
 
+        [HttpDelete]
+        public async Task<ActionResult> DeleteSyllabus(Guid subjectId)
+        {
+            var subject = await _subjectRepository.GetById(subjectId);
+            if (subject == null)
+            {
+                return NotFound("Subject does not exist");
+            }
+            var oldSyllabusVersion = await _syllabusVersionRepository.GetBySubjectId(subjectId);
+            oldSyllabusVersion.UpdatedAt = DateTime.UtcNow;
+            await _syllabusVersionRepository.SaveChanges();
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.DELETE,
+                Entity = Constants.EntityNames.Syllabus,
+                Notes = subject.Name
+            };
+            await _auditRepository.CreateAudit(dbAudit);
+            return Ok();
+
+        }
         private async Task<bool> ValidateSection1(Section1CreateDto newEntry)
         {
             if (newEntry == null) return false;
