@@ -6,6 +6,7 @@ namespace licenta.Services.Syllabuses
     {
         Task<IEnumerable<SyllabusVersion>> GetAllBySubjectId(Guid SubjectId);
         Task<SyllabusVersion?> GetById(Guid SubjectId);
+        Task<SyllabusVersion?> GetBySubjectId(Guid SubjectId);
         Task<bool> Exists(Guid SyllabusVersionId);
         Task<bool> SubjectHasSyllabus(Guid SubjectId);
         Task<bool> SaveChanges();

@@ -9,7 +9,7 @@ namespace licenta.Services.Syllabuses
         Task<bool> Exists(Guid SyllabusId, Guid SubjectId);
         Task<bool> SaveChanges();
         Task<bool> CreateSyllabusSubject(SyllabusSubject newEntry);
-
+        void DeleteAllBySyllabusId(Guid syllabusId);
         void DeleteSyllabusSubject(SyllabusSubject entry);
     }
 }

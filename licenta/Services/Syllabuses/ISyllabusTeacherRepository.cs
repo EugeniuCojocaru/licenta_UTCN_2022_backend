@@ -11,5 +11,6 @@ namespace licenta.Services.Syllabuses
         Task<bool> CreateSyllabusTeacher(SyllabusTeacher newEntry);
 
         void DeleteSyllabusTeacher(SyllabusTeacher entry);
+        void DeleteAllBySyllabusId(Guid syllabusId);
     }
 }

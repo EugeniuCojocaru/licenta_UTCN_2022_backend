@@ -3,16 +3,19 @@ using licenta.Entities;
 using licenta.Models.Subjects;
 using licenta.Models.Syllabuses;
 using licenta.Models.Teachers;
+using licenta.Services.Audits;
 using licenta.Services.InstitutionHierarchy;
 using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
 using licenta.Services.Teachers;
 using licenta.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace licenta.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/syllabuses")]
     public class SyllabusController : ControllerBase
     {
@@ -38,8 +41,9 @@ namespace licenta.Controllers
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IFieldOfStudyRepository _fieldOfStudyRepository;
         private readonly ITeacherRepository _teacherRepository;
+        private readonly IAuditRepository _auditRepository;
 
-        public SyllabusController(ISection1Repository section1Repository, ISection2Repository section2Repository, ISection3Repository section3Repository, ISection4Repository section4Repository, ISection5Repository section5Repository, ISection6Repository section6Repository, ISection7Repository section7Repository, ISection8Repository section8Repository, ISection8ElementRepository section8ElementRepository, ISection9Repository section9Repository, ISection10Repository section10Repository, ISubjectRepository subjectRepository, ISyllabusRepository syllabusRepository, ISyllabusTeacherRepository syllabusTeacherRepository, ISyllabusSubjectRepository syllabusSubjectRepository, ISyllabusVersionRepository syllabusVersionRepository, IMapper mapper, IInstitutionRepository institutionRepository, IFacultyRepository facultyRepository, IDepartmentRepository departmentRepository, IFieldOfStudyRepository fieldOfStudyRepository, ITeacherRepository teacherRepository)
+        public SyllabusController(ISection1Repository section1Repository, ISection2Repository section2Repository, ISection3Repository section3Repository, ISection4Repository section4Repository, ISection5Repository section5Repository, ISection6Repository section6Repository, ISection7Repository section7Repository, ISection8Repository section8Repository, ISection8ElementRepository section8ElementRepository, ISection9Repository section9Repository, ISection10Repository section10Repository, ISubjectRepository subjectRepository, ISyllabusRepository syllabusRepository, ISyllabusTeacherRepository syllabusTeacherRepository, ISyllabusSubjectRepository syllabusSubjectRepository, ISyllabusVersionRepository syllabusVersionRepository, IMapper mapper, IInstitutionRepository institutionRepository, IFacultyRepository facultyRepository, IDepartmentRepository departmentRepository, IFieldOfStudyRepository fieldOfStudyRepository, ITeacherRepository teacherRepository, IAuditRepository auditRepository)
         {
             _section1Repository = section1Repository ?? throw new ArgumentNullException(nameof(section1Repository));
             _section2Repository = section2Repository ?? throw new ArgumentNullException(nameof(section2Repository));
@@ -63,6 +67,7 @@ namespace licenta.Controllers
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _fieldOfStudyRepository = fieldOfStudyRepository ?? throw new ArgumentNullException(nameof(fieldOfStudyRepository));
             _teacherRepository = teacherRepository ?? throw new ArgumentNullException(nameof(teacherRepository));
+            _auditRepository = auditRepository ?? throw new ArgumentNullException(nameof(auditRepository));
         }
 
         [HttpGet]
@@ -74,7 +79,8 @@ namespace licenta.Controllers
         [HttpGet("subject/{id}")]
         public async Task<ActionResult<SyllabusDto>> GetSyllabusBySubjectId(Guid id)
         {
-            var syllabus = await _syllabusRepository.GetBySubjectId(id);
+            var syllabusVersion = await _syllabusVersionRepository.GetBySubjectId(id);
+            var syllabus = await _syllabusRepository.GetById(syllabusVersion.SyllabusId);
             if (syllabus == null)
             {
                 return NotFound();
@@ -83,6 +89,99 @@ namespace licenta.Controllers
             return Ok(syllabusDto);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<string>> UpdateSyllabus(SyllabusCreateDto newSyllabus, Guid oldSyllabusId)
+        {
+            // verificare existenta fisa disciplina veche
+            var oldSyllabus = await _syllabusRepository.GetById(oldSyllabusId);
+            if (oldSyllabus == null)
+                return NotFound("Could not find syllabus to update");
+            //validare sectiouni
+            if (await ValidateSection1(newSyllabus.section1) == false)
+                return NotFound("Error when validating section 1");
+            if (await ValidateSection2(newSyllabus.section2) == false)
+                return NotFound("Error when validating section 2");
+            // validare materie
+            var subject = await _subjectRepository.GetById(newSyllabus.SubjectId);
+            if (subject == null)
+            {
+                return NotFound("Could not find subject");
+            }
+            //creare syllabus
+            var dbSyllabus = new Syllabus { SubjectId = newSyllabus.SubjectId };
+            await _syllabusRepository.CreateSyllabus(dbSyllabus);
+
+            var note = "Changed sections: ";
+            // creare sectiunea 1 si verificare daca sunt aceleasi
+            var section1Result = await SameSection1(oldSyllabus.Section1Id, newSyllabus.section1, dbSyllabus.Id);
+            dbSyllabus.Section1Id = section1Result.Item1;
+            note += section1Result.Item2;
+            // creare sectiunea 2 si verificare daca sunt aceleasi
+            var section2Result = await SameSection2(oldSyllabus.Section2Id, newSyllabus.section2, dbSyllabus.Id);
+            dbSyllabus.Section2Id = section2Result.Item1;
+            note += section2Result.Item2;
+            // creare sectiunea 3 si verificare daca sunt aceleasi
+            var section3Result = await SameSection3(oldSyllabus.Section3Id, newSyllabus.section3, dbSyllabus.Id);
+            dbSyllabus.Section3Id = section3Result.Item1;
+            note += section3Result.Item2;
+            // creare sectiunea 4 si verificare daca sunt aceleasi
+            var section4Result = await SameSection4(oldSyllabus.Section4Id, newSyllabus.section4, dbSyllabus.Id);
+            dbSyllabus.Section4Id = section4Result.Item1;
+            note += section4Result.Item2;
+            // creare sectiunea 5 si verificare daca sunt aceleasi
+            var section5Result = await SameSection5(oldSyllabus.Section5Id, newSyllabus.section5, dbSyllabus.Id);
+            dbSyllabus.Section5Id = section5Result.Item1;
+            note += section5Result.Item2;
+            // creare sectiunea 6 si verificare daca sunt aceleasi
+            var section6Result = await SameSection6(oldSyllabus.Section6Id, newSyllabus.section6, dbSyllabus.Id);
+            dbSyllabus.Section6Id = section6Result.Item1;
+            note += section6Result.Item2;
+            // creare sectiunea 7 si verificare daca sunt aceleasi
+            var section7Result = await SameSection7(oldSyllabus.Section7Id, newSyllabus.section7, dbSyllabus.Id);
+            dbSyllabus.Section7Id = section7Result.Item1;
+            note += section7Result.Item2;
+            // creare sectiunea 8 si verificare daca sunt aceleasi
+            var section8Result = await SameSection8(oldSyllabus.Section8Id, newSyllabus.section8, dbSyllabus.Id);
+            dbSyllabus.Section8Id = section8Result.Item1;
+            note += section8Result.Item2;
+            // creare sectiunea 9 si verificare daca sunt aceleasi
+            var section9Result = await SameSection9(oldSyllabus.Section9Id, newSyllabus.section9, dbSyllabus.Id);
+            dbSyllabus.Section9Id = section9Result.Item1;
+            note += section9Result.Item2;
+            // creare sectiunea 10 si verificare daca sunt aceleasi
+            var section10Result = await SameSection10(oldSyllabus.Section10Id, newSyllabus.section10, dbSyllabus.Id);
+            dbSyllabus.Section10Id = section10Result.Item1;
+            note += section10Result.Item2;
+            if (note.Equals("Changed sections: "))
+            {
+                _syllabusRepository.DeleteSyllabus(dbSyllabus);
+                return Ok("Nothing to update");
+            }
+
+            await _syllabusRepository.SaveChanges();
+            var oldSyllabusVersion = await _syllabusVersionRepository.GetBySubjectId(newSyllabus.SubjectId);
+            oldSyllabusVersion.UpdatedAt = DateTime.UtcNow;
+            await _syllabusVersionRepository.SaveChanges();
+
+            var newSyllabusVersion = new SyllabusVersion
+            {
+                SyllabusId = dbSyllabus.Id
+            };
+            await _syllabusVersionRepository.CreateSyllabusVersion(newSyllabusVersion);
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.UPDATE,
+                Entity = Constants.EntityNames.Syllabus,
+                Notes = note,
+            };
+            await _auditRepository.CreateAudit(dbAudit);
+            return Ok(note);
+
+
+        }
 
         [HttpPost]
         public async Task<ActionResult<SyllabusDto>> CreateSyllabus([FromBody] SyllabusCreateDto newSyllabus)
@@ -131,6 +230,15 @@ namespace licenta.Controllers
                 SyllabusId = dbSyllabus.Id
             };
             await _syllabusVersionRepository.CreateSyllabusVersion(syllabusVersion);
+            var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
+            var dbAudit = new Audit
+            {
+                UserId = Guid.Parse(userId),
+                Operation = Constants.Operation.CREATE,
+                Entity = Constants.EntityNames.Syllabus,
+                Notes = subject.Name
+            };
+            await _auditRepository.CreateAudit(dbAudit);
             var syllabusToReturn = await MapSyllabusToSyllabusDto(dbSyllabus);
             return Ok(syllabusToReturn);
 
@@ -320,6 +428,7 @@ namespace licenta.Controllers
 
         private async Task<SyllabusDto> MapSyllabusToSyllabusDto(Syllabus syllabus)
         {
+            var subject = await _subjectRepository.GetById(syllabus.SubjectId);
             var s1Dto = await Section1ToDto(syllabus.Section1Id);
             var s2Dto = await Section2ToDto(syllabus.Section2Id, syllabus.Id);
             var s3Dto = await Section3ToDto(syllabus.Section3Id);
@@ -334,7 +443,7 @@ namespace licenta.Controllers
             var syllabusDto = new SyllabusDto
             {
                 Id = syllabus.Id,
-                Subject = _mapper.Map<SubjectDto>(syllabus.Subject),
+                Subject = _mapper.Map<SubjectDto>(subject),
                 Section1 = s1Dto,
                 Section2 = s2Dto,
                 Section3 = s3Dto,
@@ -346,16 +455,6 @@ namespace licenta.Controllers
                 Section9 = s9Dto,
                 Section10 = s10Dto,
             };
-            /* syllabusDto.Section1 = s1Dto;
-             syllabusDto.Section2 = s2Dto;
-             syllabusDto.Section3 = s3Dto;
-             syllabusDto.Section4 = s4Dto;
-             syllabusDto.Section5 = s5Dto;
-             syllabusDto.Section6 = s6Dto;
-             syllabusDto.Section7 = s7Dto;
-             syllabusDto.Section8 = s8Dto;
-             syllabusDto.Section9 = s9Dto;
-             syllabusDto.Section10 = s10Dto;*/
 
             return syllabusDto;
         }
@@ -487,6 +586,235 @@ namespace licenta.Controllers
             var sDto = _mapper.Map<Section10Dto>(sDb);
             sDto.ConditionsFinalExam = StringConvertor.MapStringToStringList(sDb.ConditionsFinalExam);
             return sDto;
+        }
+
+        private async Task<(Guid, string)> SameSection1(Guid? oldSection1Id, Section1CreateDto newSection1CreateDto, Guid newSyllabusId)
+        {
+            var section1Id = await CreateSection1(newSection1CreateDto, newSyllabusId);
+
+            var oldSection1 = await _section1Repository.GetById(oldSection1Id);
+            var newSection1 = await _section1Repository.GetById(section1Id);
+
+            if (oldSection1.InstitutionId != newSection1.InstitutionId) return (newSection1.Id, " section1,");
+            if (oldSection1.FacultyId != newSection1.FacultyId) return (newSection1.Id, " section1,");
+            if (oldSection1.DepartmentId != newSection1.DepartmentId) return (newSection1.Id, " section1,");
+            if (oldSection1.FieldOfStudyId != newSection1.FieldOfStudyId) return (newSection1.Id, " section1,");
+
+            if (oldSection1.CycleOfStudy != newSection1.CycleOfStudy) return (newSection1.Id, " section1,");
+            if (oldSection1.ProgramOfStudy != newSection1.ProgramOfStudy) return (newSection1.Id, " section1,");
+            if (oldSection1.Qualification != newSection1.Qualification) return (newSection1.Id, " section1,");
+            if (oldSection1.FormOfEducation != newSection1.FormOfEducation) return (newSection1.Id, " section1,");
+
+            _section1Repository.DeleteSection1(newSection1);
+
+            return (oldSection1.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection2(Guid? oldSection2Id, Section2CreateDto newSection2CreateDto, Guid newSyllabusId)
+        {
+            var section2Id = await CreateSection2(newSection2CreateDto, newSyllabusId);
+
+            var oldSection2 = await _section2Repository.GetById(oldSection2Id);
+            var newSection2 = await _section2Repository.GetById(section2Id);
+
+            if (oldSection2.YearOfStudy != newSection2.YearOfStudy) return (newSection2.Id, " section2,");
+            if (oldSection2.Semester != newSection2.Semester) return (newSection2.Id, " section2,");
+            if (oldSection2.Assessment != newSection2.Assessment) return (newSection2.Id, " section2,");
+            if (oldSection2.Category1 != newSection2.Category1) return (newSection2.Id, " section2,");
+
+            if (oldSection2.Category2 != newSection2.Category2) return (newSection2.Id, " section2,");
+            if (oldSection2.TeacherId != newSection2.TeacherId) return (newSection2.Id, " section2,");
+
+            var teachersOldSyllabus = await _syllabusTeacherRepository.GetAllBySyllabusId(oldSection2.SyllabusId);
+            var teachersNewSyllabus = await _syllabusTeacherRepository.GetAllBySyllabusId(newSyllabusId);
+
+            if (teachersOldSyllabus.Count() != teachersNewSyllabus.Count()) return (newSection2.Id, " section2,");
+            else
+            {
+                foreach (var teacher in teachersOldSyllabus)
+                {
+                    if (!teachersNewSyllabus.Any(tns => tns.TeacherId == teacher.TeacherId))
+                    {
+                        return (newSection2.Id, " section2,");
+                    }
+                }
+            }
+
+            _syllabusTeacherRepository.DeleteAllBySyllabusId(newSyllabusId);
+            _section2Repository.DeleteSection2(newSection2);
+
+            return (oldSection2.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection3(Guid? oldSection3Id, Section3CreateDto newSection3CreateDto, Guid newSyllabusId)
+        {
+            var section3Id = await CreateSection3(newSection3CreateDto, newSyllabusId);
+
+            var oldSection3 = await _section3Repository.GetById(oldSection3Id);
+            var newSection3 = await _section3Repository.GetById(section3Id);
+
+            if (oldSection3.CourseHoursPerWeek != newSection3.CourseHoursPerWeek) return (newSection3.Id, " section3,");
+            if (oldSection3.SeminarHoursPerWeek != newSection3.SeminarHoursPerWeek) return (newSection3.Id, " section3,");
+            if (oldSection3.LaboratoryHoursPerWeek != newSection3.LaboratoryHoursPerWeek) return (newSection3.Id, " section3,");
+            if (oldSection3.ProjectHoursPerWeek != newSection3.ProjectHoursPerWeek) return (newSection3.Id, " section3,");
+
+            if (oldSection3.CourseHoursPerSemester != newSection3.CourseHoursPerSemester) return (newSection3.Id, " section3,");
+            if (oldSection3.SeminarHoursPerSemester != newSection3.SeminarHoursPerSemester) return (newSection3.Id, " section3,");
+            if (oldSection3.LaboratoryHoursPerSemester != newSection3.LaboratoryHoursPerSemester) return (newSection3.Id, " section3,");
+            if (oldSection3.ProjectHoursPerSemester != newSection3.ProjectHoursPerSemester) return (newSection3.Id, " section3,");
+
+            if (oldSection3.IndividualStudyA != newSection3.IndividualStudyA) return (newSection3.Id, " section3,");
+            if (oldSection3.IndividualStudyB != newSection3.IndividualStudyB) return (newSection3.Id, " section3,");
+            if (oldSection3.IndividualStudyC != newSection3.IndividualStudyC) return (newSection3.Id, " section3,");
+            if (oldSection3.IndividualStudyD != newSection3.IndividualStudyD) return (newSection3.Id, " section3,");
+            if (oldSection3.IndividualStudyE != newSection3.IndividualStudyE) return (newSection3.Id, " section3,");
+            if (oldSection3.IndividualStudyF != newSection3.IndividualStudyF) return (newSection3.Id, " section3,");
+
+            if (oldSection3.Credits != newSection3.Credits) return (newSection3.Id, " section3,");
+
+            _section3Repository.DeleteSection3(newSection3);
+
+            return (oldSection3.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection4(Guid? oldSection4Id, Section4CreateDto newSection4CreateDto, Guid newSyllabusId)
+        {
+            var section4Id = await CreateSection4(newSection4CreateDto, newSyllabusId);
+
+            var oldSection4 = await _section4Repository.GetById(oldSection4Id);
+            var newSection4 = await _section4Repository.GetById(section4Id);
+
+            if (oldSection4.Competences != newSection4.Competences) return (newSection4.Id, " section4,");
+
+            var subjectsOldSyllabus = await _syllabusSubjectRepository.GetAllBySyllabusId(oldSection4.SyllabusId);
+            var subjectsNewSyllabus = await _syllabusSubjectRepository.GetAllBySyllabusId(newSyllabusId);
+
+            if (subjectsOldSyllabus.Count() != subjectsNewSyllabus.Count()) return (newSection4.Id, " section4,");
+            else
+            {
+                foreach (var subject in subjectsOldSyllabus)
+                {
+                    if (!subjectsNewSyllabus.Any(sns => sns.SubjectId == subject.SubjectId))
+                    {
+                        return (newSection4.Id, " section4,");
+                    }
+                }
+            }
+            _syllabusSubjectRepository.DeleteAllBySyllabusId(newSyllabusId);
+            _section4Repository.DeleteSection4(newSection4);
+
+            return (oldSection4.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection5(Guid? oldSection5Id, Section5CreateDto newSection5CreateDto, Guid newSyllabusId)
+        {
+            var section5Id = await CreateSection5(newSection5CreateDto, newSyllabusId);
+
+            var oldSection5 = await _section5Repository.GetById(oldSection5Id);
+            var newSection5 = await _section5Repository.GetById(section5Id);
+
+            if (oldSection5.Course != newSection5.Course) return (newSection5.Id, " section5,");
+            if (oldSection5.Application != newSection5.Application) return (newSection5.Id, " section5,");
+
+            _section5Repository.DeleteSection5(newSection5);
+
+            return (oldSection5.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection6(Guid? oldSection6Id, Section6CreateDto newSection6CreateDto, Guid newSyllabusId)
+        {
+            var section6Id = await CreateSection6(newSection6CreateDto, newSyllabusId);
+
+            var oldSection6 = await _section6Repository.GetById(oldSection6Id);
+            var newSection6 = await _section6Repository.GetById(section6Id);
+
+            if (oldSection6.Professional != newSection6.Professional) return (newSection6.Id, " section6,");
+            if (oldSection6.Cross != newSection6.Cross) return (newSection6.Id, " section6,");
+
+            _section6Repository.DeleteSection6(newSection6);
+
+            return (oldSection6.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection7(Guid? oldSection7Id, Section7CreateDto newSection7CreateDto, Guid newSyllabusId)
+        {
+            var section7Id = await CreateSection7(newSection7CreateDto, newSyllabusId);
+
+            var oldSection7 = await _section7Repository.GetById(oldSection7Id);
+            var newSection7 = await _section7Repository.GetById(section7Id);
+
+            if (oldSection7.GeneralObjective != newSection7.GeneralObjective) return (newSection7.Id, " section7,");
+            if (oldSection7.SpecificObjectives != newSection7.SpecificObjectives) return (newSection7.Id, " section7,");
+
+            _section7Repository.DeleteSection7(newSection7);
+
+            return (oldSection7.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection8(Guid? oldSection8Id, Section8CreateDto newSection8CreateDto, Guid newSyllabusId)
+        {
+            var section8Id = await CreateSection8(newSection8CreateDto, newSyllabusId);
+
+            var oldSection8 = await _section8Repository.GetById(oldSection8Id);
+            var newSection8 = await _section8Repository.GetById(section8Id);
+
+            if (oldSection8.TeachingMethodsCourse != newSection8.TeachingMethodsCourse) return (newSection8.Id, " section8,");
+            if (oldSection8.TeachingMethodsLab != newSection8.TeachingMethodsLab) return (newSection8.Id, " section8,");
+            if (oldSection8.BibliographyCourse != newSection8.BibliographyCourse) return (newSection8.Id, " section8,");
+            if (oldSection8.BibliographyLab != newSection8.BibliographyLab) return (newSection8.Id, " section8,");
+
+
+            var lecturesOldSection8 = await _section8ElementRepository.GetAllBySection8Id(oldSection8.Id);
+            var lecturesNewSection8 = await _section8ElementRepository.GetAllBySection8Id(newSection8.Id);
+
+            if (lecturesOldSection8.Count() != lecturesNewSection8.Count()) return (newSection8.Id, " section8,");
+            else
+            {
+                foreach (var lecture in lecturesOldSection8)
+                {
+                    if (!lecturesNewSection8.Any(lns => lns.Name == lecture.Name && lns.Duration == lecture.Duration && lns.IsCourse == lecture.IsCourse && lns.Note == lecture.Note))
+                    {
+                        return (newSection8.Id, " section8,");
+                    }
+                }
+            }
+            _section8ElementRepository.DeleteAllBySection8Id(newSection8.Id);
+            _section8Repository.DeleteSection8(newSection8);
+
+            return (oldSection8.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection9(Guid? oldSection9Id, Section9CreateDto newSection9CreateDto, Guid newSyllabusId)
+        {
+            var section9Id = await CreateSection9(newSection9CreateDto, newSyllabusId);
+
+            var oldSection9 = await _section9Repository.GetById(oldSection9Id);
+            var newSection9 = await _section9Repository.GetById(section9Id);
+
+            if (oldSection9.Description != newSection9.Description) return (newSection9.Id, " section9,");
+
+            _section9Repository.DeleteSection9(newSection9);
+
+            return (oldSection9.Id, "");
+        }
+        private async Task<(Guid, string)> SameSection10(Guid? oldSection10Id, Section10CreateDto newSection10CreateDto, Guid newSyllabusId)
+        {
+            var section10Id = await CreateSection10(newSection10CreateDto, newSyllabusId);
+
+            var oldSection10 = await _section10Repository.GetById(oldSection10Id);
+            var newSection10 = await _section10Repository.GetById(section10Id);
+
+            if (oldSection10.CourseCriteria != newSection10.CourseCriteria) return (newSection10.Id, " section10,");
+            if (oldSection10.CourseMethods != newSection10.CourseMethods) return (newSection10.Id, " section10,");
+            if (oldSection10.CourcePercentage != newSection10.CourcePercentage) return (newSection10.Id, " section10,");
+            if (oldSection10.SeminarCriteria != newSection10.SeminarCriteria) return (newSection10.Id, " section10,");
+            if (oldSection10.SeminarMethods != newSection10.SeminarMethods) return (newSection10.Id, " section10,");
+            if (oldSection10.SeminarPercentage != newSection10.SeminarPercentage) return (newSection10.Id, " section10,");
+            if (oldSection10.LaboratoryCriteria != newSection10.LaboratoryCriteria) return (newSection10.Id, " section10,");
+            if (oldSection10.LaboratoryMethods != newSection10.LaboratoryMethods) return (newSection10.Id, " section10,");
+            if (oldSection10.LaboratoryPercentage != newSection10.LaboratoryPercentage) return (newSection10.Id, " section10,");
+            if (oldSection10.ProjectCriteria != newSection10.ProjectCriteria) return (newSection10.Id, " section10,");
+            if (oldSection10.ProjectMethods != newSection10.ProjectMethods) return (newSection10.Id, " section10,");
+            if (oldSection10.ProjectPercentage != newSection10.ProjectPercentage) return (newSection10.Id, " section10,");
+            if (oldSection10.MinimumPerformance != newSection10.MinimumPerformance) return (newSection10.Id, " section10,");
+            if (oldSection10.ConditionsFinalExam != newSection10.ConditionsFinalExam) return (newSection10.Id, " section10,");
+            if (oldSection10.ConditionPromotion != newSection10.ConditionPromotion) return (newSection10.Id, " section10,");
+
+            _section10Repository.DeleteSection10(newSection10);
+
+            return (oldSection10.Id, "");
         }
     }
 }

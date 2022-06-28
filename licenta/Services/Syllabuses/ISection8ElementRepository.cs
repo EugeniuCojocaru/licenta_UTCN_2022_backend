@@ -11,6 +11,7 @@ namespace licenta.Services.Syllabuses
         Task<bool> SaveChanges();
         Task<bool> CreateSection8Element(Section8Element newSection8Element);
 
+        void DeleteAllBySection8Id(Guid section8Id);
         void DeleteSection8Element(Section8Element section8Element);
     }
 }

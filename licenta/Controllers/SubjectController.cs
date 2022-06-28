@@ -3,6 +3,7 @@ using licenta.Entities;
 using licenta.Models.Subjects;
 using licenta.Services.Audits;
 using licenta.Services.Subjects;
+using licenta.Services.Syllabuses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,20 +16,30 @@ namespace licenta.Controllers
     {
         private readonly ISubjectRepository _subjectRepository;
         private readonly IAuditRepository _auditRepository;
+        private readonly ISyllabusVersionRepository _syllabusVersionRepository;
         private readonly IMapper _mapper;
 
-        public SubjectController(ISubjectRepository subjectRepository, IAuditRepository auditRepository, IMapper mapper)
+        public SubjectController(ISubjectRepository subjectRepository, IAuditRepository auditRepository, ISyllabusVersionRepository syllabusVersionRepository, IMapper mapper)
         {
             _subjectRepository = subjectRepository ?? throw new ArgumentNullException(nameof(subjectRepository));
             _auditRepository = auditRepository ?? throw new ArgumentNullException(nameof(auditRepository));
+            _syllabusVersionRepository = syllabusVersionRepository ?? throw new ArgumentNullException(nameof(syllabusVersionRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubjectDto>>> GetSubjects()
         {
-            var teacherEntities = await _subjectRepository.GetAll();
-            return Ok(_mapper.Map<IEnumerable<SubjectDto>>(teacherEntities));
+            var subjectEntities = await _subjectRepository.GetAll();
+            var subjectDtos = _mapper.Map<IEnumerable<SubjectDto>>(subjectEntities);
+            foreach (SubjectDto s in subjectDtos)
+            {
+                if (await _syllabusVersionRepository.SubjectHasSyllabus(s.Id))
+                    s.HasSyllabus = true;
+                else
+                    s.HasSyllabus = false;
+            }
+            return Ok(subjectDtos);
 
         }
         [HttpGet("{id}")]

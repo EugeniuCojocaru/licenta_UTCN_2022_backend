@@ -23,6 +23,11 @@ namespace licenta.Services.Syllabuses
             return false;
         }
 
+        public void DeleteAllBySyllabusId(Guid syllabusId)
+        {
+            _context.SyllabusTeachers.RemoveRange(_context.SyllabusTeachers.Where(st => st.SyllabusId == syllabusId));
+        }
+
         public void DeleteSyllabusTeacher(SyllabusTeacher entry)
         {
             _context.SyllabusTeachers.Remove(entry);

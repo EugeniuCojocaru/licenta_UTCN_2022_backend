@@ -22,7 +22,10 @@ namespace licenta.Services.Syllabuses
             }
             return false;
         }
-
+        public void DeleteAllBySyllabusId(Guid syllabusId)
+        {
+            _context.SyllabusSubjects.RemoveRange(_context.SyllabusSubjects.Where(st => st.SyllabusId == syllabusId));
+        }
         public void DeleteSyllabusSubject(SyllabusSubject entry)
         {
             _context.SyllabusSubjects.Remove(entry);

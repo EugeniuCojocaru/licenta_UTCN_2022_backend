@@ -37,7 +37,10 @@ namespace licenta.Services.Syllabuses
         {
             return await _context.SyllabusVersions.Where(i => i.Id == SyllabusVersionId).FirstOrDefaultAsync();
         }
-
+        public async Task<SyllabusVersion?> GetBySubjectId(Guid SubjectId)
+        {
+            return await _context.SyllabusVersions.Where(i => i.Syllabus.SubjectId == SubjectId && i.UpdatedAt == DateTime.MinValue).FirstOrDefaultAsync();
+        }
         public async Task<bool> SaveChanges()
         {
             return (await _context.SaveChangesAsync() >= 0);

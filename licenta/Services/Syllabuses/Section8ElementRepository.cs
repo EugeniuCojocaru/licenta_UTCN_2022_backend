@@ -23,6 +23,11 @@ namespace licenta.Services.Syllabuses
             return false;
         }
 
+        public void DeleteAllBySection8Id(Guid section8Id)
+        {
+            _context.Section8Elements.RemoveRange(_context.Section8Elements.Where(s8e => s8e.Section8Id == section8Id));
+        }
+
         public void DeleteSection8Element(Section8Element section8Element)
         {
             _context.Section8Elements.Remove(section8Element);
