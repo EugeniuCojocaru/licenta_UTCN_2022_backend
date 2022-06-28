@@ -16,6 +16,7 @@
           "Microsoft.IdentityModel.Tokens": "6.19.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.3",
           "Swashbuckle.AspNetCore": "6.3.0",
+          "Syncfusion.Pdf.Net.Core": "20.1.0.61",
           "System.IdentityModel.Tokens.Jwt": "6.19.0",
           "Microsoft.EntityFrameworkCore": "6.0.3"
         },
@@ -289,12 +290,18 @@
           "System.Buffers": "4.5.0"
         }
       },
+      "Microsoft.NETCore.Platforms/2.0.0": {},
       "Microsoft.OpenApi/1.2.3": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
             "assemblyVersion": "1.2.3.0",
             "fileVersion": "1.2.3.0"
           }
+        }
+      },
+      "NETStandard.Library/2.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0"
         }
       },
       "Npgsql/6.0.3": {
@@ -360,6 +367,39 @@
           }
         }
       },
+      "Syncfusion.Compression.Net.Core/20.1.0.61": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Syncfusion.Compression.Portable.dll": {
+            "assemblyVersion": "20.1200.0.61",
+            "fileVersion": "20.1200.0.61"
+          }
+        }
+      },
+      "Syncfusion.Licensing/20.1.0.61": {
+        "runtime": {
+          "lib/net6.0/Syncfusion.Licensing.dll": {
+            "assemblyVersion": "20.1.0.61",
+            "fileVersion": "20.1.0.61"
+          }
+        }
+      },
+      "Syncfusion.Pdf.Net.Core/20.1.0.61": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0",
+          "Syncfusion.Compression.Net.Core": "20.1.0.61",
+          "Syncfusion.Licensing": "20.1.0.61",
+          "System.Text.Encoding.CodePages": "4.4.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll": {
+            "assemblyVersion": "20.1200.0.61",
+            "fileVersion": "20.1200.0.61"
+          }
+        }
+      },
       "System.Buffers/4.5.0": {},
       "System.Collections.Immutable/6.0.0": {
         "dependencies": {
@@ -385,6 +425,11 @@
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
       "System.Security.Cryptography.Cng/4.5.0": {},
+      "System.Text.Encoding.CodePages/4.4.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0"
+        }
+      },
       "System.Text.Encodings.Web/4.5.0": {}
     }
   },
@@ -632,12 +677,26 @@
       "path": "microsoft.net.http.headers/2.2.0",
       "hashPath": "microsoft.net.http.headers.2.2.0.nupkg.sha512"
     },
+    "Microsoft.NETCore.Platforms/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VdLJOCXhZaEMY7Hm2GKiULmn7IEPFE4XC5LPSfBVCUIA8YLZVh846gtfBJalsPQF2PlzdD7ecX7DZEulJ402ZQ==",
+      "path": "microsoft.netcore.platforms/2.0.0",
+      "hashPath": "microsoft.netcore.platforms.2.0.0.nupkg.sha512"
+    },
     "Microsoft.OpenApi/1.2.3": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-Nug3rO+7Kl5/SBAadzSMAVgqDlfGjJZ0GenQrLywJ84XGKO0uRqkunz5Wyl0SDwcR71bAATXvSdbdzPrYRYKGw==",
       "path": "microsoft.openapi/1.2.3",
       "hashPath": "microsoft.openapi.1.2.3.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7jnbRU+L08FXKMxqUflxEXtVymWvNOrS8yHgu9s6EM8Anr6T/wIX4nZ08j/u3Asz+tCufp3YVwFSEvFTPYmBPA==",
+      "path": "netstandard.library/2.0.0",
+      "hashPath": "netstandard.library.2.0.0.nupkg.sha512"
     },
     "Npgsql/6.0.3": {
       "type": "package",
@@ -681,6 +740,27 @@
       "path": "swashbuckle.aspnetcore.swaggerui/6.3.0",
       "hashPath": "swashbuckle.aspnetcore.swaggerui.6.3.0.nupkg.sha512"
     },
+    "Syncfusion.Compression.Net.Core/20.1.0.61": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qGxLHS7hXA5pWXAjzDGVz3Mv5i36+2kxFBLyIjueJQHzSrXNcb8bqiLhjxq8jq2aJA1tmj9lbsf55OPPXq5QHA==",
+      "path": "syncfusion.compression.net.core/20.1.0.61",
+      "hashPath": "syncfusion.compression.net.core.20.1.0.61.nupkg.sha512"
+    },
+    "Syncfusion.Licensing/20.1.0.61": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zKaxU7BLBwetkXI5auOs9t1ANjM8x+QGssaw/mopmefSBL63Vk5KklQ0ZsD8MzSRBv4vc+o1DxSbKsR/Vb5d4Q==",
+      "path": "syncfusion.licensing/20.1.0.61",
+      "hashPath": "syncfusion.licensing.20.1.0.61.nupkg.sha512"
+    },
+    "Syncfusion.Pdf.Net.Core/20.1.0.61": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8z+MTyJnBsVr2PIveLJ2qf0adLYjKLBaCNFy2Ude+q+KgyDVAXZkAwPU14xHhI8ApdLQNEQaEDnianN8s+S7Xw==",
+      "path": "syncfusion.pdf.net.core/20.1.0.61",
+      "hashPath": "syncfusion.pdf.net.core.20.1.0.61.nupkg.sha512"
+    },
     "System.Buffers/4.5.0": {
       "type": "package",
       "serviceable": true,
@@ -722,6 +802,13 @@
       "sha512": "sha512-WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
       "path": "system.security.cryptography.cng/4.5.0",
       "hashPath": "system.security.cryptography.cng.4.5.0.nupkg.sha512"
+    },
+    "System.Text.Encoding.CodePages/4.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6JX7ZdaceBiLKLkYt8zJcp4xTJd1uYyXXEkPw6mnlUIjh1gZPIVKPtRXPmY5kLf6DwZmf5YLwR3QUrRonl7l0A==",
+      "path": "system.text.encoding.codepages/4.4.0",
+      "hashPath": "system.text.encoding.codepages.4.4.0.nupkg.sha512"
     },
     "System.Text.Encodings.Web/4.5.0": {
       "type": "package",

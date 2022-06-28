@@ -79,3 +79,6 @@ C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\licenta.pdb
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\licenta.genruntimeconfig.cache
 C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\obj\Debug\net6.0\ref\licenta.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Syncfusion.Compression.Portable.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Syncfusion.Licensing.dll
+C:\Users\eugen\OneDrive\Desktop\Licenta\backend\licenta_be\licenta\bin\Debug\net6.0\Syncfusion.Pdf.Portable.dll

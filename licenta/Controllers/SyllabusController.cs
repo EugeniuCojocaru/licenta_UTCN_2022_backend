@@ -9,13 +9,15 @@ using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
 using licenta.Services.Teachers;
 using licenta.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Syncfusion.Drawing;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
 
 namespace licenta.Controllers
 {
     [ApiController]
-    [Authorize]
+
     [Route("api/syllabuses")]
     public class SyllabusController : ControllerBase
     {
@@ -840,6 +842,232 @@ namespace licenta.Controllers
 
             return (oldSection10.Id, "");
         }
+
+
+
+        [HttpGet("{id}/pdf")]
+        public async Task<ActionResult> GenerateFile(Guid id, bool isSyllabus)
+        {
+            var syllabus = new Syllabus();
+            if (isSyllabus)
+            {
+                syllabus = await _syllabusRepository.GetById(id);
+            }
+            else
+            {
+                var subject = await _subjectRepository.GetById(id);
+                if (subject == null)
+                {
+                    return NotFound("Could not find subject");
+                }
+                var syllabusVersion = await _syllabusVersionRepository.GetBySubjectId(id);
+                if (syllabusVersion == null)
+                {
+                    return NotFound("Subject does not have a syllabus");
+                }
+                syllabus = await _syllabusRepository.GetById(syllabusVersion.SyllabusId);
+            }
+
+            var syllabusDto = await MapSyllabusToSyllabusDto(syllabus);
+
+            //Create a new PDF document
+            PdfDocument document = new PdfDocument();
+
+            //Add a page to the document
+            PdfPage page = document.Pages.Add();
+
+            //Create PDF graphics for the page
+            PdfGraphics graphics1 = page.Graphics;
+
+            //Set the standard font
+            PdfFont fontTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+            PdfFont fontText = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
+            int x = 0;
+            int y = 0;
+            //Draw the text
+            graphics1.DrawString("Syllabus", fontTitle, PdfBrushes.Black, new PointF(x, y));
+            y += 40;
+
+            //section1
+            graphics1.DrawString("1. Data about the program of study", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            var s11 = await _institutionRepository.GetById(syllabusDto.Section1.InstitutionId);
+            graphics1.DrawString("1.1 Institution: " + s11.Name, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            var s12 = await _facultyRepository.GetById(syllabusDto.Section1.FacultyId);
+            graphics1.DrawString("1.2 Faculty: " + s12.Name, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            var s13 = await _departmentRepository.GetById(syllabusDto.Section1.DepartmentId);
+            graphics1.DrawString("1.3 Department: " + s13.Name, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            var s14 = await _fieldOfStudyRepository.GetById(syllabusDto.Section1.FieldOfStudyId);
+            graphics1.DrawString("1.4 Field of Study: " + s14.Name, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("1.5 Cicle of Study: " + syllabusDto.Section1.CycleOfStudy, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("1.6 Program of Study: " + syllabusDto.Section1.ProgramOfStudy, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("1.7 Qualification: " + syllabusDto.Section1.Qualification, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("1.8 Form of education: " + syllabusDto.Section1.FormOfEducation, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 30;
+
+            //section2
+            graphics1.DrawString("2. Data about the subject", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            graphics1.DrawString("2.1 Subject name: " + syllabusDto.Subject.Name, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("2.2 Lecturer: " + syllabusDto.Section2.Teacher.Name + " - " + syllabusDto.Section2.Teacher.Email, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            string s23 = "";
+            foreach (var teacher in syllabusDto.Section2.Teachers)
+                s23 += teacher.Name + ", ";
+            graphics1.DrawString("2.3 Teachers in charge of seminars: " + s23, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+
+            graphics1.DrawString("2.4 Year of Study: " + syllabusDto.Section2.YearOfStudy.ToString(), fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("2.5 Semester: " + syllabusDto.Section2.Semester.ToString(), fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("2.6 Type of assessment: " + syllabusDto.Section2.Assessment.ToString(), fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("2.7 Subject category: " + syllabusDto.Section2.Category1.ToString() + " " + syllabusDto.Section2.Category2.ToString(), fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 30;
+
+            //section3
+            graphics1.DrawString("3. Estimated total time", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            var s31db = await _section3Repository.GetById(syllabusDto.Section3.Id);
+            var s31 = s31db.HoursPerWeek.ToString() + ": course: " + s31db.CourseHoursPerWeek.ToString() + " | seminar: " + s31db.SeminarHoursPerWeek.ToString() + " | laboratory: " + s31db.LaboratoryHoursPerWeek.ToString() + " | project: " + s31db.ProjectHoursPerWeek.ToString();
+            graphics1.DrawString("3.1 Number of hours per week: " + s31, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            var s32 = s31db.HoursPerSemester.ToString() + ": course: " + s31db.CourseHoursPerSemester.ToString() + " | seminar: " + s31db.SeminarHoursPerSemester.ToString() + " | laboratory: " + s31db.LaboratoryHoursPerSemester.ToString() + " | project: " + s31db.ProjectHoursPerSemester.ToString();
+            graphics1.DrawString("3.2 Number of hours per semester: " + s32, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("3.3 Individual study: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            graphics1.DrawString("(a) Manual, lecture material and notes, bibliography: " + s31db.IndividualStudyA, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 15;
+            graphics1.DrawString("(b) Supplementary study in the library, online and in the field: " + s31db.IndividualStudyB, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 15;
+            graphics1.DrawString("(c) Preparation for seminars/laboratory works, homework, reports, portfolios, essays: " + s31db.IndividualStudyC, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 15;
+            graphics1.DrawString("(d) Tutoring: " + s31db.IndividualStudyD, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 15;
+            graphics1.DrawString("(e) Exams and tests: " + s31db.IndividualStudyE, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 15;
+            graphics1.DrawString("(f) Other activities: " + s31db.IndividualStudyF, fontText, PdfBrushes.Black, new PointF(50, y));
+            y += 20;
+            graphics1.DrawString("3.4 Total hours of individual study (suma (3.3(a)...3.3(f))): " + s31db.HoursSelfStudy, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("3.5 Total hours per semester (3.2+3.4) : " + s31db.TotalHoursPerSemester, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics1.DrawString("3.6 Number of credit points: " + s31db.Credits, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 30;
+
+            //new page
+            y = 0;
+            PdfPage page2 = document.Pages.Add();
+            PdfGraphics graphics2 = page2.Graphics;
+
+            //section4
+            graphics2.DrawString("4. Pre-requisites (where appropriate)", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            var s41 = "";
+            foreach (var subject in syllabusDto.Section4.Subjects)
+                s41 += subject.Name + ", ";
+            graphics2.DrawString("4.1 Curriculum: " + s41, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics2.DrawString("4.2 Competence: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section4.Compentences)
+            {
+                graphics2.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 15;
+
+            //section5
+            graphics2.DrawString("5. Requirements (where appropriate)", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            graphics2.DrawString("5.1. For the course: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section5.Course)
+            {
+                graphics2.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 5;
+            graphics2.DrawString("5.2. For the applications: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section5.Application)
+            {
+                graphics2.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 15;
+
+            //section6
+            graphics2.DrawString("6. Specific competence", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            graphics2.DrawString("6.1 Professional competences: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section6.Professional)
+            {
+                graphics2.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 5;
+            graphics2.DrawString("6.2 Cross competences: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section6.Cross)
+            {
+                graphics2.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 15;
+
+            //new page
+            y = 0;
+            PdfPage page3 = document.Pages.Add();
+            PdfGraphics graphics3 = page3.Graphics;
+
+            //section7
+            graphics3.DrawString("7. Discipline objective (as results from the key competences gained)", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            graphics3.DrawString("7.1 General objective: " + syllabusDto.Section7.GeneralObjective, fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 20;
+            graphics3.DrawString("7.2 Specific objectives: ", fontText, PdfBrushes.Black, new PointF(20, y));
+            y += 15;
+            foreach (var str in syllabusDto.Section7.SpecificObjectives)
+            {
+                graphics3.DrawString("- " + str, fontText, PdfBrushes.Black, new PointF(50, y));
+                y += 15;
+            }
+            y += 15;
+
+            //section9
+            graphics3.DrawString("8. Bridging course contents with the expectations of the representatives of the community, professional associations and employers in the field", fontText, PdfBrushes.Black, new PointF(0, y));
+            y += 30;
+            graphics3.DrawString(syllabusDto.Section9.Description, fontText, PdfBrushes.Black, new PointF(20, y));
+
+
+            //Saving the PDF to the MemoryStream
+            MemoryStream stream = new MemoryStream();
+
+            document.Save(stream);
+
+            //Set the position as '0'.
+            stream.Position = 0;
+
+            //Download the PDF document in the browser
+            FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
+
+            fileStreamResult.FileDownloadName = "Sample.pdf";
+
+            return fileStreamResult;
+        }
+
     }
 }
 
