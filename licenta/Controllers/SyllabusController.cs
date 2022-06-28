@@ -1051,6 +1051,12 @@ namespace licenta.Controllers
             y += 30;
             graphics3.DrawString(syllabusDto.Section9.Description, fontText, PdfBrushes.Black, new PointF(20, y));
 
+            //new page
+            y = 0;
+            PdfPage page4 = document.Pages.Add();
+            PdfGraphics graphics4 = page4.Graphics;
+
+
 
             //Saving the PDF to the MemoryStream
             MemoryStream stream = new MemoryStream();
