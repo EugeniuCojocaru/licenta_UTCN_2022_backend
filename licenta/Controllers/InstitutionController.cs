@@ -66,6 +66,7 @@ namespace licenta.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult<InstitutionDto>> CreateInstitution(InstitutionCreateDto newInstitution)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
@@ -93,6 +94,7 @@ namespace licenta.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> UpdateInstitution(InstitutionUpdateDto updatedInstitution)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;
@@ -120,6 +122,7 @@ namespace licenta.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> DeleteInstitution(Guid institutionId)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))?.Value;

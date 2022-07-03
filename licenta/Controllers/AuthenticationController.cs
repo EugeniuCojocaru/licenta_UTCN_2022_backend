@@ -30,8 +30,10 @@ namespace licenta.Controllers
                 var userId = await ValidateUserCredentials(credentials.Email, credentials.Password);
                 if (userId == null)
                 {
+
                     return Unauthorized();
                 }
+                if (credentials.Password.Equals("Licenta2022UTCN@")) return StatusCode(222, userId);
                 var role = await _teacherRepository.GetRoleById(userId);
                 var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
                 var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -54,7 +56,19 @@ namespace licenta.Controllers
 
             return BadRequest("Send some data as well");
         }
-
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(UserActivateDto user)
+        {
+            var oldAccount = await _teacherRepository.GetById(user.Id);
+            if (oldAccount == null)
+            {
+                return NotFound("User not found");
+            }
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            oldAccount.Password = hashedPassword;
+            await _teacherRepository.SaveChanges();
+            return Ok();
+        }
 
         private async Task<Guid?> ValidateUserCredentials(string email, string password)
         {

@@ -28,6 +28,11 @@ namespace licenta.Services.Audits
             return await _context.Audits.OrderByDescending(i => i.CreatedAt).ToListAsync();
         }
 
+        public async Task<IEnumerable<Audit>> GetByMonth()
+        {
+            return await _context.Audits.Where(i => i.CreatedAt.Month.Equals(DateTime.Now.Month)).ToListAsync();
+        }
+
         public async Task<bool> SaveChanges()
         {
             return (await _context.SaveChangesAsync() >= 0);

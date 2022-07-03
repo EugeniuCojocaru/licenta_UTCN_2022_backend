@@ -4,6 +4,7 @@ namespace licenta.Services.InstitutionHierarchy
 {
     public interface IDepartmentRepository
     {
+
         Task<IEnumerable<Department>> GetAll();
         Task<Department?> GetById(Guid id);
         Task<bool> Exists(Guid id);

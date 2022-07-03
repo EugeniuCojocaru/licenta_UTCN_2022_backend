@@ -68,6 +68,7 @@ namespace licenta.Controllers
 
         }
         [HttpPost]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult<SubjectDto>> CreateSubject(SubjectCreateDto newSubject)
         {
             if (await _subjectRepository.Exists(newSubject.Code))
@@ -92,6 +93,7 @@ namespace licenta.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult> UpdateSubject(SubjectUpdateDto updatedSubject)
         {
             var oldSubject = await _subjectRepository.GetById(updatedSubject.Id);
@@ -120,6 +122,7 @@ namespace licenta.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult> DeleteSubject(Guid id)
         {
             var subject = await _subjectRepository.GetById(id);

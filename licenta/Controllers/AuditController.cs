@@ -25,6 +25,7 @@ namespace licenta.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult<IEnumerable<AuditDto>>> GetAudits()
         {
             var auditEntities = await _auditRepository.GetAll();
@@ -43,6 +44,62 @@ namespace licenta.Controllers
                 audits.Add(auditDto);
             }
             return Ok(audits);
+
+        }
+
+        [HttpGet("/activity/month")]
+        [Authorize(Policy = "MustBeAdmin")]
+        public async Task<ActionResult<IEnumerable<AuditDto>>> GetStatistics()
+        {
+            var auditEntities = await _auditRepository.GetByMonth();
+            var statistics = new List<StatsDto>();
+            foreach (Audit a in auditEntities)
+            {
+                var v = statistics.FindIndex(s => s.Label.Equals(a.CreatedAt.Day.ToString()));
+                if (v != -1)
+                {
+                    statistics.ElementAt(v).Value++;
+                }
+                else
+                {
+                    statistics.Add(new StatsDto { Label = a.CreatedAt.Day.ToString() });
+                }
+            }
+
+
+            return Ok(statistics);
+
+        }
+        [HttpGet("/activity/user")]
+        [Authorize(Policy = "MustBeAdmin")]
+        public async Task<ActionResult<IEnumerable<AuditDto>>> GetStatistics2()
+        {
+            var auditEntities = await _auditRepository.GetByMonth();
+            var statistics = new List<StatsDto>();
+            foreach (Audit a in auditEntities)
+            {
+                var v = statistics.FindIndex(s => s.Label.Equals(a.UserId.ToString()));
+                if (v != -1)
+                {
+                    statistics.ElementAt(v).Value++;
+                }
+                else
+                {
+                    statistics.Add(new StatsDto { Label = a.UserId.ToString() });
+                }
+            }
+
+            foreach (var s in statistics)
+            {
+                var t = await _teacherRepository.GetById(new Guid(s.Label));
+                if (t != null)
+                {
+                    s.Label = t.Name;
+                }
+            }
+
+
+            return Ok(statistics);
 
         }
     }

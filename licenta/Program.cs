@@ -97,8 +97,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("MustBeAdmin", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("role", "Admin");
+        policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
     });
+    options.AddPolicy("MustBeAtLeastEditor", policy =>
+     {
+         policy.RequireAuthenticatedUser();
+         policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Editor", "Admin");
+     });
 }
 );
 var app = builder.Build();

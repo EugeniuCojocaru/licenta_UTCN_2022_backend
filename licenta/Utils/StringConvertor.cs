@@ -2,7 +2,7 @@
 {
     public class StringConvertor
     {
-        public static string SEPARATOR = "֍";
+        private static string SEPARATOR = "֍";
 
         public StringConvertor()
         {

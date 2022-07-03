@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Alphabetical">
+  <Class Name="licenta.Services.Audits.AuditRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAIAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Services\Audits\AuditRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.InstitutionHierarchy.DepartmentRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAEACAABAAAAAAAAAAAAgAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\DepartmentRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.InstitutionHierarchy.FacultyRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kABAAAAAAAAABAAAAAgAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\FacultyRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.InstitutionHierarchy.FieldOfStudyRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAgAAIAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\FieldOfStudyRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.InstitutionHierarchy.InstitutionRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAAgABAAEAQIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\InstitutionRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Subjects.SubjectRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAgAAAAEAgIA=</HashCode>
+      <FileName>Services\Subjects\SubjectRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section10Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAABAAAAAABAAEAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section10Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section1Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAABAAAAAABAAEAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section1Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section2Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAACBAAAAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section2Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section3Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAEAAAAAAAAAAAAAAAAAgAAEAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section3Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section4Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAACAAAAAAAAAgAAAAEAIIA=</HashCode>
+      <FileName>Services\Syllabuses\Section4Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section5Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAEAAAAAAAABAAAAAABAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section5Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section6Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAIAAAABAAAAAAAAAAAAAAAIAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section6Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section7Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAAAAAAAAAABQgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section7Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section8ElementRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAIAAAAAABAAAAAAAACAAAAAAAAAIAgAAAAEACIA=</HashCode>
+      <FileName>Services\Syllabuses\Section8ElementRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section8Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACAAABAAAAAAAAIAAAIAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\Section8Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.Section9Repository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAgAAAAEAAJA=</HashCode>
+      <FileName>Services\Syllabuses\Section9Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.SyllabusRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABgAAAAAAAAAAAAAgAAAAAggAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\SyllabusRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.SyllabusSubjectRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAAEABAAQAAAAAAAEEAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Services\Syllabuses\SyllabusSubjectRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.SyllabusTeacherRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAQBEAQAAAEAAAEAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Services\Syllabuses\SyllabusTeacherRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Syllabuses.SyllabusVersionRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAEABEAAAAAAAAAAAAAgAAAAAAAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\SyllabusVersionRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="licenta.Services.Teachers.TeacherRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAABAAAAAAACAAAAAAAAAgAAAAUAAIA=</HashCode>
+      <FileName>Services\Teachers\TeacherRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="licenta.Services.Audits.IAuditRepository" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Services\Audits\IAuditRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.InstitutionHierarchy.IDepartmentRepository" Collapsed="true">
+    <Position X="2.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAEACAAAAAAAAAAAAAAAgAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\IDepartmentRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.InstitutionHierarchy.IFacultyRepository" Collapsed="true">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\IFacultyRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.InstitutionHierarchy.IFieldOfStudyRepository" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAEAAIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\IFieldOfStudyRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.InstitutionHierarchy.IInstitutionRepository" Collapsed="true">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgABAAEAQIA=</HashCode>
+      <FileName>Services\InstitutionHierarchy\IInstitutionRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Subjects.ISubjectRepository" Collapsed="true">
+    <Position X="2.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAAAAEAgIA=</HashCode>
+      <FileName>Services\Subjects\ISubjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection10Repository" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAABAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection10Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection1Repository" Collapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAABAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection1Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection2Repository" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection2Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection3Repository" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAEAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection3Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection4Repository" Collapsed="true">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAEAIIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection4Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection5Repository" Collapsed="true">
+    <Position X="0.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection5Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection6Repository" Collapsed="true">
+    <Position X="2.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAIAAAAAAAAAAAAAAAAAAAAIAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection6Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection7Repository" Collapsed="true">
+    <Position X="4" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection7Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection8ElementRepository" Collapsed="true">
+    <Position X="5.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAIAAAAAAAAAAAAAAACAAAAAAAAAIAgAAAAEACIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection8ElementRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection8Repository" Collapsed="true">
+    <Position X="7.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACAAAAAAAAAAAAIAAAIAAAAAAAgAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISection8Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISection9Repository" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAJA=</HashCode>
+      <FileName>Services\Syllabuses\ISection9Repository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISyllabusRepository" Collapsed="true">
+    <Position X="4" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAgAAAAAAAAAAAAAgAAAAAggAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISyllabusRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISyllabusSubjectRepository" Collapsed="true">
+    <Position X="5.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAAEAAAAQAAAAAAAEEAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Services\Syllabuses\ISyllabusSubjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISyllabusTeacherRepository" Collapsed="true">
+    <Position X="7.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAQAEAQAAAEAAAEAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Services\Syllabuses\ISyllabusTeacherRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Syllabuses.ISyllabusVersionRepository" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAEAAEAAAAAAAAAAAAAgAAAAAAAAAAEAAIA=</HashCode>
+      <FileName>Services\Syllabuses\ISyllabusVersionRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="licenta.Services.Teachers.ITeacherRepository" Collapsed="true">
+    <Position X="2.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAABAAAAAAACAAAAAAAAAgAAAAUAAIA=</HashCode>
+      <FileName>Services\Teachers\ITeacherRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

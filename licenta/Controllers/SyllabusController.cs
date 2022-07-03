@@ -9,6 +9,7 @@ using licenta.Services.Subjects;
 using licenta.Services.Syllabuses;
 using licenta.Services.Teachers;
 using licenta.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.Drawing;
 using Syncfusion.Pdf;
@@ -17,7 +18,7 @@ using Syncfusion.Pdf.Graphics;
 namespace licenta.Controllers
 {
     [ApiController]
-
+    [Authorize]
     [Route("api/syllabuses")]
     public class SyllabusController : ControllerBase
     {
@@ -92,6 +93,7 @@ namespace licenta.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult<string>> UpdateSyllabus(SyllabusCreateDto newSyllabus, Guid oldSyllabusId)
         {
             // verificare existenta fisa disciplina veche
@@ -186,6 +188,7 @@ namespace licenta.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult<SyllabusDto>> CreateSyllabus([FromBody] SyllabusCreateDto newSyllabus)
         {
             if (await ValidateSection1(newSyllabus.section1) == false)
@@ -247,6 +250,7 @@ namespace licenta.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAtLeastEditor")]
         public async Task<ActionResult> DeleteSyllabus(Guid subjectId)
         {
             var subject = await _subjectRepository.GetById(subjectId);

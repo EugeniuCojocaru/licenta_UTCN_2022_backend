@@ -68,6 +68,7 @@ namespace licenta.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult<FacultyWithoutDepartmentDto>> CreateFaculty(FacultyCreateDto facultyDto)
         {
             if (!await _institutionRepository.Exists(facultyDto.InstitutionId))
@@ -96,6 +97,7 @@ namespace licenta.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> UpdateFaculty(Guid institutionId, InstitutionUpdateDto facultyDto)
         {
             if (!await _institutionRepository.Exists(institutionId))
@@ -123,6 +125,7 @@ namespace licenta.Controllers
 
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> DeleteFaculty(Guid facultyId, Guid institutionId)
         {
             if (!await _institutionRepository.Exists(institutionId))

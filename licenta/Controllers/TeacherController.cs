@@ -51,16 +51,16 @@ namespace licenta.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult<TeacherDto>> CreateTeacher(TeacherCreateDto newTeacher)
         {
             if (await _teacherRepository.Exists(newTeacher.Email))
             {
                 return Conflict("Same email not allowed");
             }
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newTeacher.Password);
-            var dbTeacher = _mapper.Map<Entities.Teacher>(newTeacher);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword("Licenta2022UTCN@");
+            var dbTeacher = _mapper.Map<Teacher>(newTeacher);
             dbTeacher.Password = hashedPassword;
-            dbTeacher.Role = Entities.Constants.Role.User;
             dbTeacher.Active = true;
             await _teacherRepository.CreateTeacher(dbTeacher);
 
@@ -79,6 +79,7 @@ namespace licenta.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> UpdateTeacher(TeacherUpdateDto updatedTeacher)
         {
             var oldTeacher = await _teacherRepository.GetById(updatedTeacher.Id);
@@ -104,6 +105,7 @@ namespace licenta.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "MustBeAdmin")]
         public async Task<ActionResult> DeleteTeacher(Guid id)
         {
             var teacher = await _teacherRepository.GetById(id);
